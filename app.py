@@ -9,6 +9,7 @@ def inicio():
 
 @app.route("/login",methods=["POST","GET"])
 def login():
+    session["usuario"]=""
     if request.method == "POST":
         session["usuario"] = request.form["txtUsuario"]
     return render_template("login.html")

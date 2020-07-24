@@ -4,17 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static',filename='css/estilos.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
     <title>{%block titulo%}{%endblock%}</title>
     <script src="{{url_for('static',filename='js/terminal.js')}}"></script>
-        <script>
-            $(document).ready(function(){
-                var matrixTerminal = new Terminal()
-                matrixTerminal.setHeight("200px")
-                matrixTerminal.setWidth('600px')
-                $(".terminalMain").append(matrixTerminal.html)
-                matrixTerminal.print('Hello, world!')
-            });
-        </script>
+    <script src="{{url_for('static',filename='js/matrixTerminal.js')}}"></script>
 </head>
 <body>
     <header>
