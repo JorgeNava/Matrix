@@ -63,7 +63,7 @@ var Terminal = (function () {
 				var inputValue = inputField.value
 				if (shouldDisplayInput) terminalObj.print(inputValue)
 				terminalObj.html.removeChild(inputField)
-				if (typeof(callback) === 'function') {
+				if (typeof (callback) === 'function') {
 					if (PROMPT_TYPE === PROMPT_CONFIRM) {
 						callback(inputValue.toUpperCase()[0] === 'Y' ? true : false)
 					} else callback(inputValue)
@@ -72,7 +72,7 @@ var Terminal = (function () {
 		}
 		if (firstPrompt) {
 			firstPrompt = false
-			setTimeout(function () { inputField.focus()	}, 50)
+			setTimeout(function () { inputField.focus() }, 50)
 		} else {
 			inputField.focus()
 		}
@@ -90,7 +90,7 @@ var Terminal = (function () {
 
 		this.html = document.createElement('div')
 		this.html.className = 'Terminal'
-		if (typeof(id) === 'string') { this.html.id = id }
+		if (typeof (id) === 'string') { this.html.id = id }
 
 		this._innerWindow = document.createElement('div')
 		this._output = document.createElement('p')

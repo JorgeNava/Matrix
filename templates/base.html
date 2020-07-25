@@ -15,6 +15,9 @@
             <ul>
                 <li><a href="/">Inicio</a></li>
                 <li><a href="/login">Iniciar sesión</a></li>            
+                {%if session["usuario"]%}
+                    <li><a href="/terminal">Terminal</a></li>  
+                {%endif%}          
             </ul>
         </nav>
         <p>{{session['usuario']}}</p>
