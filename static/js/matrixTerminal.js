@@ -9,7 +9,7 @@ function terminalMatrix() {
     $(".terminalMain").append(matrixTerminal.html)
 
     //Función recursiva que evaluar y opera comandos ingresados
-    inputCommandTerminal(matrixTerminal,usr)
+    inputCommandTerminal(matrixTerminal, usr)
 }
 
 /*
@@ -18,17 +18,17 @@ function terminalMatrix() {
     consultas/operaciones a los archivos txt (memoria?)
     de cadausuario.
 */
-function inputCommandTerminal(matrixTerminal,usuario) {
-    matrixTerminal.input("Admin@Admin:~$", function (comando) {
+function inputCommandTerminal(matrixTerminal, usuario) {
+    matrixTerminal.input(usr + "@" + usr + ":~$", function (comando) {
         //Se extrae el valor pasado por Flask para llamar a una funcion py que abra el archivo del usr
         //LOGRE PASAR INFORMACION DE FLASK A JS
-       // let usr = '{{usr}}' Esta parte requiere investigacion
+        // let usr = '{{usr}}' Esta parte requiere investigacion
         switch (comando) {
             case "clr":
                 clearTerminal(matrixTerminal)
                 break;
             case "read":
-                readFile(matrixTerminal, usuario)
+                readFile(matrixTerminal, leerArchivo)
                 break
             case "write":
                 writeFile(matrixTerminal, usuario)
@@ -37,7 +37,7 @@ function inputCommandTerminal(matrixTerminal,usuario) {
                 matrixTerminal.print('"' + comando + '" no es un comando reconocido...')
                 break;
         }
-        inputCommandTerminal(matrixTerminal,usuario)
+        inputCommandTerminal(matrixTerminal, usuario)
 
         //Proceso de recibir comandos
         //Comunicar con Python para abrir archivos y operarlos
@@ -46,8 +46,8 @@ function inputCommandTerminal(matrixTerminal,usuario) {
 }
 
 //Abrira y leera el contenido del archivo usr.txt usando una funcion en Flask
-function readFile(matrixTerminal, usr) {
-    matrixTerminal.print("read: " + usr)
+function readFile(matrixTerminal, leerArchivo) {
+    matrixTerminal.print(">> " + leerArchivo)
     //Debe conectarse con escribirEnArchivo.py
 }
 //Abrira y escribira el contenido del archivo usr.txt usando una funcion en Flask

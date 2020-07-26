@@ -1,7 +1,9 @@
 from flask import Flask, render_template, session, request
+import os
 
 app = Flask(__name__)
 app.secret_key = "secreto"
+
 
 @app.route("/")
 def inicio():
@@ -39,8 +41,21 @@ def terminal():
     Conflicto - ¿Como vamos a enviar la información encontrada en la
     idea anterior devuelta al js para que sea impreso en la terminal?
     """
+    """
+    Conflicto - Investigar como determinar en que linea escribir
+    """
    # if request.method == "POST":
-    return render_template("terminal.html", usr=session["usuario"])
+    filename = "./users/"
+    filename += session["usuario"]
+    filename += ".txt"
+
+    lineaDestino = 3
+
+    file = open(filename, "r")
+    contenidoFile = file.read()
+    file.close()
+
+    return render_template("terminal.html", usr=session["usuario"], leerArchivo=contenidoFile)
 
 
 app.run(debug=True, port=80)
