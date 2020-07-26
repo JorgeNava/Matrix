@@ -3,7 +3,6 @@ from flask import Flask, render_template, session, request
 app = Flask(__name__)
 app.secret_key = "secreto"
 
-
 @app.route("/")
 def inicio():
     return render_template("inicio.html")
@@ -40,8 +39,7 @@ def terminal():
     Conflicto - ¿Como vamos a enviar la información encontrada en la
     idea anterior devuelta al js para que sea impreso en la terminal?
     """
-    # if request.method == "POST":
-    #session["usuario"] = request.form["txtUsuario"]
+   # if request.method == "POST":
     return render_template("terminal.html", usr=session["usuario"])
 
 
