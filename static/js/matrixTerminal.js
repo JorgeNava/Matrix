@@ -47,7 +47,7 @@ function inputCommandTerminal(matrixTerminal, usuario) {
 
 //Abrira y leera el contenido del archivo usr.txt usando una funcion en Flask
 function readFile(matrixTerminal, leerArchivo) {
-    matrixTerminal.print(">> " + leerArchivo)
+    matrixTerminal.print(leerArchivo)
     //Debe conectarse con escribirEnArchivo.py
 }
 //Abrira y escribira el contenido del archivo usr.txt usando una funcion en Flask

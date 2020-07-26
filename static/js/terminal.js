@@ -106,9 +106,41 @@ var Terminal = (function () {
 		}
 
 		this.print = function (message) {
+			//let testText = "hola^Hola2"
+			let messageDiv = document.createElement('div')
+			let newLine = 0, lineMessage = ""
+			//Buscamos la primera linea, se identifican con \n
+			for (let i = 0; i < message.length; i++) {
+				//Si encuentra un salto de linea se guarda hasta donde se leyo y añade al principal
+				if (message.charAt(i) == "^") {
+					newLine = document.createElement('div')
+					newLine.textContent = lineMessage
+					messageDiv.appendChild(newLine)
+					lineMessage = ">> "
+				} else {
+					lineMessage += message.charAt(i)
+				}
+			}
+			//Esta linea bloque solo va si se decide poner ^ al final de las lineas tambien
+			newLine = document.createElement('div')
+			newLine.textContent = lineMessage
+			messageDiv.appendChild(newLine)
+			this._output.appendChild(messageDiv)
+
+			/*//CONTENEDOR PRINCIPAL
+			let messageDiv = document.createElement('div')
+
+			//CONTENEDOR DE LINEAS
 			var newLine = document.createElement('div')
-			newLine.textContent = message
-			this._output.appendChild(newLine)
+			newLine.textContent = "message"
+			//CONTENEDOR DE LINEAS
+			var newLine2 = document.createElement('div')
+			newLine2.textContent = "message2"
+			//SE AGREGAN TODAS LOS CONTENEDORES DE LINEAS AL PRINCIPAÑ
+			messageDiv.appendChild(newLine)
+			messageDiv.appendChild(newLine2)
+			//SOLO MANDAMOS PRINCIPAL
+			this._output.appendChild(messageDiv)*/
 		}
 
 		this.input = function (message, callback) {

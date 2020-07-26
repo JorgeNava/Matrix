@@ -45,9 +45,7 @@ def terminal():
     Conflicto - Investigar como determinar en que linea escribir
     """
    # if request.method == "POST":
-    filename = "./users/"
-    filename += session["usuario"]
-    filename += ".txt"
+    filename = "./users/" + session["usuario"] + ".txt"
 
     lineaDestino = 3
 
