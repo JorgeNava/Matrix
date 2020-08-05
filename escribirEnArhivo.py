@@ -1,7 +1,7 @@
 import os
 
-filename = "./users/"
-filename += input("Username: ")
+filename = "./files/Jorge/"
+filename += input("Nombre del archivo: ")
 filename += ".txt"
 
 file = open(filename, "w")
