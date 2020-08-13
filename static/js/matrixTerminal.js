@@ -42,6 +42,9 @@ function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
             case "list":
                 list(inodo_del_directorio_actual)
                 break
+            case "createf":
+                matrixTerminal.input("", createf(comandoSeccionado[1]))
+                break
             case "createdir":
                 matrixTerminal.input("", createdir(comandoSeccionado[1]))
                 break
@@ -66,6 +69,16 @@ function readFile() {
 function writeFile(usr) {
     matrixTerminal.print("write: " + usr)
     //Debe conectarse con escribirEnArchivo.py
+}
+
+//Creara un archivo
+function createf(nombre_del_archivo) {
+    matrixTerminal.print("creating " + nombre_del_archivo + "...")
+    //Pasar comando a python
+    comando_a_enviar = 'createf ' + nombre_del_archivo
+    $.getJSON('/manejo_de_comandos', comando_a_enviar, function (data) {
+        matrixTerminal.print("Archivo creado !  ")
+    });
 }
 
 //Creara un directorio

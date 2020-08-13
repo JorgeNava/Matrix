@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, request
+from flask import Flask, render_template, session, request, jsonify
 import os
 from usuario import Usuario
 import json
@@ -10,7 +10,7 @@ users = [Usuario("admin", "cisco"), Usuario(
     "Gustavo", "cisco"), Usuario("Jorge", "cisco")]
 
 # Recipiente del usuario actual, sera asignado despues de hacer login
-actualUser = users[2]
+actualUser = Usuario("", "")
 
 
 @ app.route("/")
@@ -37,7 +37,26 @@ def login():
 
 @ app.route("/terminal", methods=["POST", "GET"])
 def terminal():
+    # O usamos JSON
+    # si recibe POST se le para saber que funcion correr
+    # switch con funciones en base a comando corrido en terminal
+    # js escribe en un txt, py lo abre y extrae los datos, py escribe en txt y js lo lee
     return render_template("terminal.html", usr=actualUser._Nombre, inodo_del_directorio_actual=actualUser._InodoDelDirectorioActual)
+
+
+@ app.route("/manejo_de_comandos", methods=["POST", "GET"])
+def manejo_de_comandos():
+    comando_a_recibir = request.args.get('comando_a_enviar')
+    if (comando_a_recibir is not None):
+        comando_seccionado = comando_a_recibir.split()
+        if(comando_seccionado[0] == "creatf"):
+            nombre_del_archivo = "./files/admin/" + \
+                comando_seccionado[1] + ".txt"
+            file_handler = open(nombre_del_archivo, 'wb')
+            file_handler.close()
+    else:
+        print("Comando is None")
+    return jsonify("Is done!!!")
 
 
 app.run(debug=True, port=80)
