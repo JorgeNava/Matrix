@@ -41,20 +41,27 @@ def terminal():
     # si recibe POST se le para saber que funcion correr
     # switch con funciones en base a comando corrido en terminal
     # js escribe en un txt, py lo abre y extrae los datos, py escribe en txt y js lo lee
-    comando_recibido = request.args.get("comando")
-    Nombre_archivo = request.args.get("nombreArchivo")
-    #print(comando_recibido)
-    #print(Nombre_archivo)
+    #comando_recibido = request.args.get("comando")
+    #Nombre_archivo = request.args.get("nombreArchivo")
+    comando_recibido = request.args.get("comando_a_enviar")
     if (comando_recibido is not None):
-        if(comando_recibido == "createf"):
-            nombre_del_archivo = "./files/admin/" + Nombre_archivo + ".txt"
+        comando_seccionado = comando_recibido.split("-")
+        if(comando_seccionado[0] == "createf"):
+            nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
+                comando_seccionado[1] + ".txt"
             file_handler = open(nombre_del_archivo, 'w')
+            file_handler.close()
+        elif(comando_seccionado[0] == "edit"):
+            nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
+                comando_seccionado[1] + ".txt"
+            file_handler = open(nombre_del_archivo, 'w')
+            file_handler.write("comando_seccionado[2]")
             file_handler.close()
     else:
         print("Comando is None")
     return render_template("terminal.html", usr=actualUser._Nombre, inodo_del_directorio_actual=actualUser._InodoDelDirectorioActual)
 
-    #return jsonify("Is done!!!")'''
+    # return jsonify("Is done!!!")'''
 
 
 app.run(debug=True, port=80)

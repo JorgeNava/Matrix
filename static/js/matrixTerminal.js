@@ -36,17 +36,17 @@ function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
             case "read":
                 readFile()
                 break
-            case "write":
-                writeFile(usuario)
+            case "edit":
+                edit(comandoSeccionado[1])
                 break
             case "list":
                 list(inodo_del_directorio_actual)
                 break
             case "createf":
-                matrixTerminal.input("", createf(comandoSeccionado[1]))
+                createf(comandoSeccionado[1])
                 break
             case "createdir":
-                matrixTerminal.input("", createdir(comandoSeccionado[1]))
+                createdir(comandoSeccionado[1])
                 break
             default:
                 matrixTerminal.print('"' + comando + '" no es un comando reconocido...')
@@ -60,37 +60,31 @@ function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
     })
 }
 
+//Creara un archivo
+function createf(nombre_del_archivo) {
+    matrixTerminal.print("creating " + nombre_del_archivo + "...")
+    //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
+    parametros_a_enviar = "comando_a_enviar=createf-" + nombre_del_archivo;
+    send_request_to_python(parametros_a_enviar);
+}
+
+//Abrira y escribira el contenido de un archivo
+function edit(nombre_del_archivo) {
+    matrixTerminal.print("pppopenning " + nombre_del_archivo + " for edition...")
+    matrixTerminal.input("Input the new text: ", function (texto_a_agregar) {
+        parametros_a_enviar = "comando_a_enviar=edit-" + testing1 + "-" + "texto_a_agregar";
+        send_request_to_python(parametros_a_enviar);
+    })
+}
+
 //Abrira y leera el contenido del archivo usr.txt usando una funcion en Flask
 function readFile() {
     matrixTerminal.print("HOLA")
     //Debe conectarse con escribirEnArchivo.py
 }
-//Abrira y escribira el contenido del archivo usr.txt usando una funcion en Flask
-function writeFile(usr) {
-    matrixTerminal.print("write: " + usr)
-    //Debe conectarse con escribirEnArchivo.py
-}
 
-//Creara un archivo
-function createf(nombre_del_archivo) {
-    matrixTerminal.print("creating " + nombre_del_archivo + "...")
-    //Pasar comando a python
-   /* comando_a_enviar = 'createf ' + nombre_del_archivo
-    $.getJSON('/manejo_de_comandos', comando_a_enviar, function (data) {
-        matrixTerminal.print("Archivo creado !  ")
-    });*/
-    var url = "/terminal";
-    var params = "comando=createf&nombreArchivo="+nombre_del_archivo;
-    var http = new XMLHttpRequest();
-    http.open("GET",url+"?"+params, true);
-    http.onreadystatechange = function()
-    {
-        if(http.readyState == 4 && http.status == 200) {
-            alert(http.responseText);
-        }
-    }
-    http.send();
-}
+
+
 
 //Creara un directorio
 function createdir(nombre_del_archivo) {
@@ -104,6 +98,20 @@ function list(inodo_del_directorio_actual) {
     //mandar string python con información de que necesitamos recibir un JSON con información de nuestro directorio actual
     //pasamos el comando y el inodo_del_directorio_actual para que python realice la busqueda y nos mande el JSON
     //recibimos JSON y lo imprimimos en la consola
+}
+
+//Envia solicitudes http a la terminal
+function send_request_to_python(parametros_a_enviar) {
+    let url = "/terminal";
+    let params = parametros_a_enviar;
+    let http = new XMLHttpRequest();
+    http.open("GET", url + "?" + params, true);
+    http.onreadystatechange = function () {
+        if (http.readyState == 4 && http.status == 200) {
+            //alert(http.responseText);
+        }
+    }
+    http.send();
 }
 
 //Limpieza de terminal
