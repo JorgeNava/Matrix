@@ -54,8 +54,8 @@ def terminal():
         elif(comando_seccionado[0] == "edit"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
                 comando_seccionado[1] + ".txt"
-            file_handler = open(nombre_del_archivo, 'w')
-            file_handler.write("comando_seccionado[2]")
+            file_handler = open(nombre_del_archivo, 'a')
+            file_handler.write(comando_seccionado[2]+"\n")
             file_handler.close()
     else:
         print("Comando is None")

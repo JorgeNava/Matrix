@@ -37,7 +37,11 @@ function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
                 readFile()
                 break
             case "edit":
-                edit(comandoSeccionado[1])
+                let i, texto_a_agregar = ""
+                for (i = 3; i < comandoSeccionado.length; i++) {
+                    texto_a_agregar += comandoSeccionado[i] + " "
+                }
+                edit(comandoSeccionado[1], texto_a_agregar)
                 break
             case "list":
                 list(inodo_del_directorio_actual)
@@ -69,12 +73,14 @@ function createf(nombre_del_archivo) {
 }
 
 //Abrira y escribira el contenido de un archivo
-function edit(nombre_del_archivo) {
-    matrixTerminal.print("pppopenning " + nombre_del_archivo + " for edition...")
-    matrixTerminal.input("Input the new text: ", function (texto_a_agregar) {
-        parametros_a_enviar = "comando_a_enviar=edit-" + testing1 + "-" + "texto_a_agregar";
-        send_request_to_python(parametros_a_enviar);
-    })
+function edit(nombre_del_archivo, texto_a_agregar) {
+    matrixTerminal.print("openning " + nombre_del_archivo + " for edition...")
+    //matrixTerminal.input("Input the new text: ", function (texto_a_agregar) {
+    parametros_a_enviar = "comando_a_enviar=edit-" + nombre_del_archivo + "-" + texto_a_agregar;
+    send_request_to_python(parametros_a_enviar);
+    //})
+    //alert("holllaaaaa alert")
+    //console.log("hola")
 }
 
 //Abrira y leera el contenido del archivo usr.txt usando una funcion en Flask
