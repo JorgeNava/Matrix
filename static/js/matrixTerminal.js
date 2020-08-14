@@ -75,10 +75,21 @@ function writeFile(usr) {
 function createf(nombre_del_archivo) {
     matrixTerminal.print("creating " + nombre_del_archivo + "...")
     //Pasar comando a python
-    comando_a_enviar = 'createf ' + nombre_del_archivo
+   /* comando_a_enviar = 'createf ' + nombre_del_archivo
     $.getJSON('/manejo_de_comandos', comando_a_enviar, function (data) {
         matrixTerminal.print("Archivo creado !  ")
-    });
+    });*/
+    var url = "/terminal";
+    var params = "comando=createf&nombreArchivo="+nombre_del_archivo;
+    var http = new XMLHttpRequest();
+    http.open("GET",url+"?"+params, true);
+    http.onreadystatechange = function()
+    {
+        if(http.readyState == 4 && http.status == 200) {
+            alert(http.responseText);
+        }
+    }
+    http.send();
 }
 
 //Creara un directorio

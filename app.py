@@ -41,22 +41,20 @@ def terminal():
     # si recibe POST se le para saber que funcion correr
     # switch con funciones en base a comando corrido en terminal
     # js escribe en un txt, py lo abre y extrae los datos, py escribe en txt y js lo lee
-    return render_template("terminal.html", usr=actualUser._Nombre, inodo_del_directorio_actual=actualUser._InodoDelDirectorioActual)
-
-
-@ app.route("/manejo_de_comandos", methods=["POST", "GET"])
-def manejo_de_comandos():
-    comando_a_recibir = request.args.get('comando_a_enviar')
-    if (comando_a_recibir is not None):
-        comando_seccionado = comando_a_recibir.split()
-        if(comando_seccionado[0] == "creatf"):
-            nombre_del_archivo = "./files/admin/" + \
-                comando_seccionado[1] + ".txt"
-            file_handler = open(nombre_del_archivo, 'wb')
+    comando_recibido = request.args.get("comando")
+    Nombre_archivo = request.args.get("nombreArchivo")
+    #print(comando_recibido)
+    #print(Nombre_archivo)
+    if (comando_recibido is not None):
+        if(comando_recibido == "createf"):
+            nombre_del_archivo = "./files/admin/" + Nombre_archivo + ".txt"
+            file_handler = open(nombre_del_archivo, 'w')
             file_handler.close()
     else:
         print("Comando is None")
-    return jsonify("Is done!!!")
+    return render_template("terminal.html", usr=actualUser._Nombre, inodo_del_directorio_actual=actualUser._InodoDelDirectorioActual)
+
+    #return jsonify("Is done!!!")'''
 
 
 app.run(debug=True, port=80)
