@@ -3,7 +3,7 @@ let matrixTerminal = new Terminal()
 
 console.log("USER: ", usr)
 console.log("pyresponse: ", pyresponse)
-
+console.log("x: ", x)
 function terminalMatrix() {
 
     //Inicializacion de terminal
@@ -13,7 +13,7 @@ function terminalMatrix() {
     $(".terminalMain").append(matrixTerminal.html)
 
     //Función recursiva que evaluar y opera comandos ingresados
-    inputCommandTerminal(usr, inodo_del_directorio_actual,)
+    inputCommandTerminal(usr, inodo_del_directorio_actual)
 }
 
 /*
@@ -55,6 +55,9 @@ function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
             case "createdir":
                 createdir(comandoSeccionado[1])
                 break
+            case "delete":
+                deleteFile(comandoSeccionado[1])
+                break
             default:
                 matrixTerminal.print('"' + comando + '" no es un comando reconocido...')
                 break;
@@ -84,15 +87,19 @@ function edit(nombre_del_archivo, texto_a_agregar) {
 }
 
 //Abrira y leera el contenido del archivo usr.txt usando una funcion en Flask
+function deleteFile(nombre_del_archivo) {
+    matrixTerminal.print("deleting file:" + nombre_del_archivo)
+    parametros_a_enviar = "comando_a_enviar=delete-" + nombre_del_archivo;
+    send_request_to_python(parametros_a_enviar);
+}
+
 function readFile(nombre_del_archivo) {
     matrixTerminal.print("openning " + nombre_del_archivo + " for reading...")
     parametros_a_enviar = "comando_a_enviar=read-" + nombre_del_archivo;
     send_request_to_python(parametros_a_enviar);
-    matrixTerminal.print("My dream " + usr)
+    matrixTerminal.print(pyresponse)
     //matrixTerminal.print(pyresponse)
 }
-
-
 
 
 //Creara un directorio

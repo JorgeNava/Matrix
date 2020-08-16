@@ -3,6 +3,7 @@ import os
 from usuario import Usuario
 import json
 
+
 app = Flask(__name__)
 app.secret_key = "secreto"
 
@@ -57,6 +58,7 @@ def terminal():
             file_handler = open(nombre_del_archivo, 'a')
             file_handler.write(comando_seccionado[2]+"\n")
             file_handler.close()
+            #prueba = "holaaaaaaa"
         elif(comando_seccionado[0] == "read"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
                 comando_seccionado[1] + ".txt"
@@ -64,11 +66,22 @@ def terminal():
             # mandar el contenido del archivo
             python_response_for_js = file_handler.read()
             file_handler.close()
+            #prueba = "holaaaaaaa"
+        elif(comando_seccionado[0] == "delete"):
+            nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
+                comando_seccionado[1] + ".txt"
+            if os.path.exists(nombre_del_archivo):
+                os.remove(nombre_del_archivo)
+            else:
+                #Faltaria arreglar lo de mandar datos a Javascript para q ue la terminal muestre que no existe el archivo
+                print("The file does not exist")
+
     else:
         print("Comando is None")
         python_response_for_js = "default message for js!"
+        #prueba="adios"
     return render_template("terminal.html", usr=actualUser._Nombre, pyresponse=python_response_for_js)
     # return jsonify("Is done!!!")'''
-
+    #, x=prueba meter en render
 
 app.run(debug=True, port=80)
