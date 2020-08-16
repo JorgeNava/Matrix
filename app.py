@@ -57,10 +57,17 @@ def terminal():
             file_handler = open(nombre_del_archivo, 'a')
             file_handler.write(comando_seccionado[2]+"\n")
             file_handler.close()
+        elif(comando_seccionado[0] == "read"):
+            nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
+                comando_seccionado[1] + ".txt"
+            file_handler = open(nombre_del_archivo, 'r')
+            # mandar el contenido del archivo
+            python_response_for_js = file_handler.read()
+            file_handler.close()
     else:
         print("Comando is None")
-    return render_template("terminal.html", usr=actualUser._Nombre, inodo_del_directorio_actual=actualUser._InodoDelDirectorioActual)
-
+        python_response_for_js = "default message for js!"
+    return render_template("terminal.html", usr=actualUser._Nombre, pyresponse=python_response_for_js)
     # return jsonify("Is done!!!")'''
 
 

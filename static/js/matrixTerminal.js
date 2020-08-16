@@ -1,6 +1,9 @@
 //Creación de objeto terminal
 let matrixTerminal = new Terminal()
 
+console.log("USER: ", usr)
+console.log("pyresponse: ", pyresponse)
+
 function terminalMatrix() {
 
     //Inicializacion de terminal
@@ -10,7 +13,7 @@ function terminalMatrix() {
     $(".terminalMain").append(matrixTerminal.html)
 
     //Función recursiva que evaluar y opera comandos ingresados
-    inputCommandTerminal(usr, inodo_del_directorio_actual)
+    inputCommandTerminal(usr, inodo_del_directorio_actual,)
 }
 
 /*
@@ -34,7 +37,7 @@ function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
                 clearTerminal()
                 break;
             case "read":
-                readFile()
+                readFile(comandoSeccionado[1])
                 break
             case "edit":
                 let i, texto_a_agregar = ""
@@ -78,15 +81,15 @@ function edit(nombre_del_archivo, texto_a_agregar) {
     //matrixTerminal.input("Input the new text: ", function (texto_a_agregar) {
     parametros_a_enviar = "comando_a_enviar=edit-" + nombre_del_archivo + "-" + texto_a_agregar;
     send_request_to_python(parametros_a_enviar);
-    //})
-    //alert("holllaaaaa alert")
-    //console.log("hola")
 }
 
 //Abrira y leera el contenido del archivo usr.txt usando una funcion en Flask
-function readFile() {
-    matrixTerminal.print("HOLA")
-    //Debe conectarse con escribirEnArchivo.py
+function readFile(nombre_del_archivo) {
+    matrixTerminal.print("openning " + nombre_del_archivo + " for reading...")
+    parametros_a_enviar = "comando_a_enviar=read-" + nombre_del_archivo;
+    send_request_to_python(parametros_a_enviar);
+    matrixTerminal.print("My dream " + usr)
+    //matrixTerminal.print(pyresponse)
 }
 
 
