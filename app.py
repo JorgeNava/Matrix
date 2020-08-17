@@ -72,6 +72,12 @@ def terminal():
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
             comando_seccionado[1] + ".txt"
             os.remove(nombre_del_archivo)
+        elif(comando_seccionado[0] == "rename"):
+            nombre_del_archivo_viejo = "./files/"+actualUser._Nombre+"/" + \
+            comando_seccionado[1] + ".txt"
+            nombre_del_archivo_nuevo = "./files/"+actualUser._Nombre+"/" + \
+            comando_seccionado[2] + ".txt"
+            os.rename(nombre_del_archivo_viejo,nombre_del_archivo_nuevo)
         elif(comando_seccionado[0] == "copy"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
             comando_seccionado[1] +"(copy("+str(copias)+")).txt"

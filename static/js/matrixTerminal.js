@@ -57,6 +57,9 @@ function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
             case "delete":
                 deleteFile(comandoSeccionado[1])
                 break
+            case "rename":
+                renameFile(comandoSeccionado[1],comandoSeccionado[2])
+                break
             case "copy":
                 copyFile(comandoSeccionado[1])
                 break
@@ -84,6 +87,14 @@ function copyFile(nombre_del_archivo) {
     matrixTerminal.print("copying " + nombre_del_archivo + "...")
     //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
     parametros_a_enviar = "comando_a_enviar=copy-" + nombre_del_archivo;
+    send_request_to_python(parametros_a_enviar);
+}
+
+//Renombrara un archivo
+function renameFile(nombre_del_archivo_viejo,nombre_del_archivo_nuevo) {
+    matrixTerminal.print("renaming file " + nombre_del_archivo_viejo + " to "+nombre_del_archivo_nuevo)
+    //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
+    parametros_a_enviar = "comando_a_enviar=rename-" + nombre_del_archivo_viejo+"-"+nombre_del_archivo_nuevo;
     send_request_to_python(parametros_a_enviar);
 }
 
