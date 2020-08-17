@@ -49,19 +49,19 @@ def terminal():
         comando_seccionado = comando_recibido.split("-")
         if(comando_seccionado[0] == "createf"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
-                comando_seccionado[1] + ".txt"
+            comando_seccionado[1] + ".txt"
             file_handler = open(nombre_del_archivo, 'w')
             file_handler.close()
         elif(comando_seccionado[0] == "edit"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
-                comando_seccionado[1] + ".txt"
+            comando_seccionado[1] + ".txt"
             file_handler = open(nombre_del_archivo, 'a')
             file_handler.write(comando_seccionado[2]+"\n")
             file_handler.close()
             #prueba = "holaaaaaaa"
         elif(comando_seccionado[0] == "read"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
-                comando_seccionado[1] + ".txt"
+            comando_seccionado[1] + ".txt"
             file_handler = open(nombre_del_archivo, 'r')
             # mandar el contenido del archivo
             python_response_for_js = file_handler.read()
@@ -69,13 +69,8 @@ def terminal():
             #prueba = "holaaaaaaa"
         elif(comando_seccionado[0] == "delete"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
-                comando_seccionado[1] + ".txt"
-            if os.path.exists(nombre_del_archivo):
-                os.remove(nombre_del_archivo)
-            else:
-                #Faltaria arreglar lo de mandar datos a Javascript para q ue la terminal muestre que no existe el archivo
-                print("The file does not exist")
-
+            comando_seccionado[1] + ".txt"
+            os.remove(nombre_del_archivo)
     else:
         print("Comando is None")
         python_response_for_js = "default message for js!"
