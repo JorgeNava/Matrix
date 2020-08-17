@@ -31,7 +31,6 @@ function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
         //partir el comando en seccion
         //cada seccion estara dividida por un espacio 
         let comandoSeccionado = comando.split(" ");
-
         switch (comandoSeccionado[0]) {
             case "clr":
                 clearTerminal()
@@ -58,6 +57,9 @@ function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
             case "delete":
                 deleteFile(comandoSeccionado[1])
                 break
+            case "copy":
+                copyFile(comandoSeccionado[1])
+                break
             default:
                 matrixTerminal.print('"' + comando + '" no es un comando reconocido...')
                 break;
@@ -77,6 +79,13 @@ function createf(nombre_del_archivo) {
     parametros_a_enviar = "comando_a_enviar=createf-" + nombre_del_archivo;
     send_request_to_python(parametros_a_enviar);
 }
+//Copiara un archivo
+function copyFile(nombre_del_archivo) {
+    matrixTerminal.print("copying " + nombre_del_archivo + "...")
+    //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
+    parametros_a_enviar = "comando_a_enviar=copy-" + nombre_del_archivo;
+    send_request_to_python(parametros_a_enviar);
+}
 
 //Abrira y escribira el contenido de un archivo
 function edit(nombre_del_archivo, texto_a_agregar) {
@@ -86,7 +95,7 @@ function edit(nombre_del_archivo, texto_a_agregar) {
     send_request_to_python(parametros_a_enviar);
 }
 
-//Abrira y leera el contenido del archivo usr.txt usando una funcion en Flask
+//Eliminara un archivo
 function deleteFile(nombre_del_archivo) {
     matrixTerminal.print("deleting file:" + nombre_del_archivo)
     parametros_a_enviar = "comando_a_enviar=delete-" + nombre_del_archivo;

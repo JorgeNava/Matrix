@@ -2,6 +2,7 @@ from flask import Flask, render_template, session, request, jsonify
 import os
 from usuario import Usuario
 import json
+import requests
 
 
 app = Flask(__name__)
@@ -12,7 +13,6 @@ users = [Usuario("admin", "cisco"), Usuario(
 
 # Recipiente del usuario actual, sera asignado despues de hacer login
 actualUser = Usuario("", "")
-
 
 @ app.route("/")
 def inicio():
@@ -38,6 +38,7 @@ def login():
 
 @ app.route("/terminal", methods=["POST", "GET"])
 def terminal():
+    copias=1
     # O usamos JSON
     # si recibe POST se le para saber que funcion correr
     # switch con funciones en base a comando corrido en terminal
@@ -71,6 +72,18 @@ def terminal():
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
             comando_seccionado[1] + ".txt"
             os.remove(nombre_del_archivo)
+        elif(comando_seccionado[0] == "copy"):
+            nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
+            comando_seccionado[1] +"(copy("+str(copias)+")).txt"
+            while True:
+                if os.path.exists(nombre_del_archivo):
+                    copias+=1
+                    nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
+                    comando_seccionado[1] +"(copy("+str(copias)+")).txt"
+                else:
+                    break
+            file_handler = open(nombre_del_archivo, 'w')
+            file_handler.close()
     else:
         print("Comando is None")
         python_response_for_js = "default message for js!"
