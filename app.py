@@ -2,6 +2,8 @@ from flask import Flask, render_template, session, request, jsonify
 import os
 from usuario import Usuario
 import json
+from os import listdir
+from os.path import isfile, isdir
 
 
 app = Flask(__name__)
@@ -98,6 +100,19 @@ def dataManager():
                 count += 1
             file_handler.close()
             return file_content1
+        elif (data.get("comando") == "list"):
+            direccion = "./files/"+actualUser._Nombre+"/"
+            #file_handler = open(nombre_del_archivo, 'r')
+            dir_content = dict()
+            count = 0
+            for dir_files in ls1(direccion):
+                dir_content[count] = dir_content.get(count, dir_files)
+                count += 1
+            return dir_content
+
+
+def ls1(path):
+    return [obj for obj in listdir(path) if isfile(path + obj)]
 
 
 app.run(debug=True, port=80)

@@ -61,6 +61,9 @@ function inputCommandTerminal() {
             case "copy":
                 copyFile(comandoSeccionado[1])
                 break
+            case "ls":
+                listFiles()
+                break
             default:
                 matrixTerminal.print('"' + comando + '" no es un comando reconocido...')
                 break;
@@ -144,11 +147,29 @@ function createdir(nombre_del_archivo) {
 }
 
 //Imprimir todos los nombre y pesos de los archivos que tenemos en el directorio en el que nos encotramos
-function list(inodo_del_directorio_actual) {
+function listFiles() {
+    matrixTerminal.print("searching for files ...")
 
-    //mandar string python con información de que necesitamos recibir un JSON con información de nuestro directorio actual
-    //pasamos el comando y el inodo_del_directorio_actual para que python realice la busqueda y nos mande el JSON
-    //recibimos JSON y lo imprimimos en la consola
+    let info_to_send = {
+        "comando": "list"
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/dataManager",
+        contentType: "application/json;charser=utf-8",
+        data: JSON.stringify(info_to_send),
+        dataType: "JSON",
+        success: function (contenido_archivo) {
+            console.log(contenido_archivo)
+            matrixTerminal.print("Files founded: ")
+
+            let countKey = Object.keys(contenido_archivo).length, i;
+            for (i = 0; i < countKey; i++) {
+                matrixTerminal.print(">> " + contenido_archivo[i])
+            }
+        }
+    })
 }
 
 //Envia solicitudes http a la terminal
