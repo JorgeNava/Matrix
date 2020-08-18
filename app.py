@@ -14,6 +14,7 @@ users = [Usuario("admin", "cisco"), Usuario(
 # Recipiente del usuario actual, sera asignado despues de hacer login
 actualUser = Usuario("", "")
 
+
 @ app.route("/")
 def inicio():
     return render_template("inicio.html")
@@ -38,54 +39,45 @@ def login():
 
 @ app.route("/terminal", methods=["POST", "GET"])
 def terminal():
-    copias=1
-    # O usamos JSON
-    # si recibe POST se le para saber que funcion correr
-    # switch con funciones en base a comando corrido en terminal
-    # js escribe en un txt, py lo abre y extrae los datos, py escribe en txt y js lo lee
-    #comando_recibido = request.args.get("comando")
-    #Nombre_archivo = request.args.get("nombreArchivo")
+    copias = 1
     comando_recibido = request.args.get("comando_a_enviar")
     if (comando_recibido is not None):
         comando_seccionado = comando_recibido.split("-")
         if(comando_seccionado[0] == "createf"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
-            comando_seccionado[1] + ".txt"
+                comando_seccionado[1] + ".txt"
             file_handler = open(nombre_del_archivo, 'w')
             file_handler.close()
         elif(comando_seccionado[0] == "edit"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
-            comando_seccionado[1] + ".txt"
+                comando_seccionado[1] + ".txt"
             file_handler = open(nombre_del_archivo, 'a')
             file_handler.write(comando_seccionado[2]+"\n")
             file_handler.close()
-            #prueba = "holaaaaaaa"
         elif(comando_seccionado[0] == "read"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
-            comando_seccionado[1] + ".txt"
+                comando_seccionado[1] + ".txt"
             file_handler = open(nombre_del_archivo, 'r')
-            # mandar el contenido del archivo
             python_response_for_js = file_handler.read()
             file_handler.close()
-            #prueba = "holaaaaaaa"
         elif(comando_seccionado[0] == "delete"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
-            comando_seccionado[1] + ".txt"
+                comando_seccionado[1] + ".txt"
             os.remove(nombre_del_archivo)
         elif(comando_seccionado[0] == "rename"):
             nombre_del_archivo_viejo = "./files/"+actualUser._Nombre+"/" + \
-            comando_seccionado[1] + ".txt"
+                comando_seccionado[1] + ".txt"
             nombre_del_archivo_nuevo = "./files/"+actualUser._Nombre+"/" + \
-            comando_seccionado[2] + ".txt"
-            os.rename(nombre_del_archivo_viejo,nombre_del_archivo_nuevo)
+                comando_seccionado[2] + ".txt"
+            os.rename(nombre_del_archivo_viejo, nombre_del_archivo_nuevo)
         elif(comando_seccionado[0] == "copy"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
-            comando_seccionado[1] +"(copy("+str(copias)+")).txt"
+                comando_seccionado[1] + "(copy("+str(copias)+")).txt"
             while True:
                 if os.path.exists(nombre_del_archivo):
-                    copias+=1
+                    copias += 1
                     nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
-                    comando_seccionado[1] +"(copy("+str(copias)+")).txt"
+                        comando_seccionado[1] + "(copy("+str(copias)+")).txt"
                 else:
                     break
             file_handler = open(nombre_del_archivo, 'w')
@@ -93,9 +85,16 @@ def terminal():
     else:
         print("Comando is None")
         python_response_for_js = "default message for js!"
-        #prueba="adios"
     return render_template("terminal.html", usr=actualUser._Nombre, pyresponse=python_response_for_js)
-    # return jsonify("Is done!!!")'''
-    #, x=prueba meter en render
+
+
+@app.route('/dataManager', methods=['GET', 'POST'])
+def dataManager():
+    print(request.is_json)
+    if request.is_json:
+        data = request.get_json()
+        print(data.get("comando"), " [10]")
+        return jsonify(hello={"llave1": "valor1", "llave2": "valor2"})
+
 
 app.run(debug=True, port=80)
