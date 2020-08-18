@@ -49,6 +49,7 @@ def terminal():
                 comando_seccionado[1] + ".txt"
             file_handler = open(nombre_del_archivo, 'w')
             file_handler.close()
+            # actualUser.crearArchivo(comando_seccionado[1],funcion_que_devuelve_inodo_del_dir_Actual)
         elif(comando_seccionado[0] == "edit"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
                 comando_seccionado[1] + ".txt"
@@ -66,6 +67,8 @@ def terminal():
                 comando_seccionado[2] + ".txt"
             os.rename(nombre_del_archivo_viejo, nombre_del_archivo_nuevo)
         elif(comando_seccionado[0] == "copy"):
+            nombre_del_archivo_original = "./files/"+actualUser._Nombre+"/" + \
+                comando_seccionado[1] + ".txt"
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
                 comando_seccionado[1] + "(copy("+str(copias)+")).txt"
             while True:
@@ -75,8 +78,11 @@ def terminal():
                         comando_seccionado[1] + "(copy("+str(copias)+")).txt"
                 else:
                     break
+            file_handler_original = open(nombre_del_archivo_original, 'r')
             file_handler = open(nombre_del_archivo, 'w')
+            file_handler.write(file_handler_original.read())
             file_handler.close()
+            file_handler_original.close()
     else:
         print("Comando is None")
     return render_template("terminal.html", usr=actualUser._Nombre)
@@ -102,7 +108,6 @@ def dataManager():
             return file_content1
         elif (data.get("comando") == "list"):
             direccion = "./files/"+actualUser._Nombre+"/"
-            #file_handler = open(nombre_del_archivo, 'r')
             dir_content = dict()
             count = 0
             for dir_files in ls1(direccion):

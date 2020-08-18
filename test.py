@@ -1,4 +1,12 @@
-nombre_del_archivo = "./files/admin/" + "testing1" + ".txt"
-file_handler = open(nombre_del_archivo, 'w')
-file_handler.write("asdadasdada")
-file_handler.close()
+import os
+
+filename = "./files/Jorge/"
+filename += input("Nombre del archivo: ")
+filename += ".txt"
+
+file = open(filename, "w")
+file.write("Primera linea" + os.linesep)
+file.write("Segunda línea")
+file.write("Segunda línea")
+file.write("Segunda línea")
+file.close()

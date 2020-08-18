@@ -3,10 +3,10 @@ class Directorio:
     _InodoDir = 0  # Inodo del directorio
     _Inodos = []  # Inodos de los archivos que guarda este directorio
     _Nombre = []  # Nombre de los archivos que guarda este directorio
-    _Libre = 0  # Estado del directorio 0 si no existe ese, 1 si ya existe
+    _Libre = True  # Estado del directorio 0 si no existe ese, 1 si ya existe
 
-    def __init__(self, _Libre):
-        self._Libre = _Libre
+    def __init__(self):
+        self._Libre = True
 
     def __str__(self):
         return "{} {} {}".format(self._Inodos, self._Nombre, self._Libre)
