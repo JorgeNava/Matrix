@@ -2,7 +2,6 @@ from flask import Flask, render_template, session, request, jsonify
 import os
 from usuario import Usuario
 import json
-import requests
 
 
 app = Flask(__name__)
@@ -54,12 +53,6 @@ def terminal():
             file_handler = open(nombre_del_archivo, 'a')
             file_handler.write(comando_seccionado[2]+"\n")
             file_handler.close()
-        elif(comando_seccionado[0] == "read"):
-            nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
-                comando_seccionado[1] + ".txt"
-            file_handler = open(nombre_del_archivo, 'r')
-            python_response_for_js = file_handler.read()
-            file_handler.close()
         elif(comando_seccionado[0] == "delete"):
             nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
                 comando_seccionado[1] + ".txt"
@@ -84,8 +77,7 @@ def terminal():
             file_handler.close()
     else:
         print("Comando is None")
-        python_response_for_js = "default message for js!"
-    return render_template("terminal.html", usr=actualUser._Nombre, pyresponse=python_response_for_js)
+    return render_template("terminal.html", usr=actualUser._Nombre)
 
 
 @app.route('/dataManager', methods=['GET', 'POST'])
@@ -94,7 +86,18 @@ def dataManager():
     if request.is_json:
         data = request.get_json()
         print(data.get("comando"), " [10]")
-        return jsonify(hello={"llave1": "valor1", "llave2": "valor2"})
+        if(data.get("comando") == "read"):
+            nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
+                data.get("nombre") + ".txt"
+            file_handler = open(nombre_del_archivo, 'r')
+            file_content1 = dict()
+            count = 0
+            Lines = file_handler.readlines()
+            for line in Lines:
+                file_content1[count] = line.strip()
+                count += 1
+            file_handler.close()
+            return file_content1
 
 
 app.run(debug=True, port=80)

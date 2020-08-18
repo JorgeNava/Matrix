@@ -1,9 +1,7 @@
 //Creación de objeto terminal
 let matrixTerminal = new Terminal()
 
-console.log("USER: ", usr)
-console.log("pyresponse: ", pyresponse)
-console.log("x: ", x)
+
 function terminalMatrix() {
 
     //Inicializacion de terminal
@@ -13,7 +11,7 @@ function terminalMatrix() {
     $(".terminalMain").append(matrixTerminal.html)
 
     //Función recursiva que evaluar y opera comandos ingresados
-    inputCommandTerminal(usr, inodo_del_directorio_actual)
+    inputCommandTerminal()
 }
 
 /*
@@ -22,7 +20,7 @@ function terminalMatrix() {
     consultas/operaciones a los archivos txt (memoria?)
     de cadausuario.
 */
-function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
+function inputCommandTerminal() {
     matrixTerminal.input(usr + "@" + usr + ":~$", function (comando) {
         //Se extrae el valor pasado por Flask para llamar a una funcion py que abra el archivo del usr
         //LOGRE PASAR INFORMACION DE FLASK A JS
@@ -58,7 +56,7 @@ function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
                 deleteFile(comandoSeccionado[1])
                 break
             case "rename":
-                renameFile(comandoSeccionado[1],comandoSeccionado[2])
+                renameFile(comandoSeccionado[1], comandoSeccionado[2])
                 break
             case "copy":
                 copyFile(comandoSeccionado[1])
@@ -67,7 +65,7 @@ function inputCommandTerminal(usuario, inodo_del_directorio_actual) {
                 matrixTerminal.print('"' + comando + '" no es un comando reconocido...')
                 break;
         }
-        inputCommandTerminal(usuario, inodo_del_directorio_actual)
+        inputCommandTerminal()
 
         //Proceso de recibir comandos
         //Comunicar con Python para abrir archivos y operarlos
@@ -91,10 +89,10 @@ function copyFile(nombre_del_archivo) {
 }
 
 //Renombrara un archivo
-function renameFile(nombre_del_archivo_viejo,nombre_del_archivo_nuevo) {
-    matrixTerminal.print("renaming file " + nombre_del_archivo_viejo + " to "+nombre_del_archivo_nuevo)
+function renameFile(nombre_del_archivo_viejo, nombre_del_archivo_nuevo) {
+    matrixTerminal.print("renaming file " + nombre_del_archivo_viejo + " to " + nombre_del_archivo_nuevo)
     //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
-    parametros_a_enviar = "comando_a_enviar=rename-" + nombre_del_archivo_viejo+"-"+nombre_del_archivo_nuevo;
+    parametros_a_enviar = "comando_a_enviar=rename-" + nombre_del_archivo_viejo + "-" + nombre_del_archivo_nuevo;
     send_request_to_python(parametros_a_enviar);
 }
 
@@ -115,10 +113,27 @@ function deleteFile(nombre_del_archivo) {
 
 function readFile(nombre_del_archivo) {
     matrixTerminal.print("openning " + nombre_del_archivo + " for reading...")
-    parametros_a_enviar = "comando_a_enviar=read-" + nombre_del_archivo;
-    send_request_to_python(parametros_a_enviar);
-    matrixTerminal.print(pyresponse)
-    //matrixTerminal.print(pyresponse)
+
+    let info_to_send = {
+        "comando": "read",
+        "nombre": nombre_del_archivo
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/dataManager",
+        contentType: "application/json;charser=utf-8",
+        data: JSON.stringify(info_to_send),
+        dataType: "JSON",
+        success: function (contenido_archivo) {
+            console.log(contenido_archivo)
+
+            let countKey = Object.keys(contenido_archivo).length, i;
+            for (i = 0; i < countKey; i++) {
+                matrixTerminal.print(contenido_archivo[i])
+            }
+        }
+    })
 }
 
 
