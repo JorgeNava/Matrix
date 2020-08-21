@@ -120,4 +120,16 @@ def ls1(path):
     return [obj for obj in listdir(path) if isfile(path + obj)]
 
 
+"""
+VAMOS A GUARDAR TODA LA INFORMACIÓN DEL USUARIO ACTUAL DENTRO DE SU ARCHIVO MEMORIA
+def guardarPartida(actualUser):´
+*Arbiemos el archivo memoria del usuario
+*
+
+VAMOS A INICIALIZAR TODA LA INFORMACIÓN DEL ARCHIVO MEMORIA DEL USUARIO DENTRO DE SUS ESTRCUTURAS
+def cargarPartida(actualUser):
+* Buscar el archivo del usuario
+* Extraer todo del archivo memoria a la estructura del usuario
+"""
+
 app.run(debug=True, port=80)

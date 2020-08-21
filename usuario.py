@@ -13,6 +13,7 @@ class Usuario:
     _Inodo = []
     _Directorio = []
     _InodoDelDirectorioActual = 0
+    _InodoDelDirectorioPapa = 0
 
     def __init__(self, _Nombre, _Contraseña):
         self._Nombre = _Nombre
@@ -60,8 +61,10 @@ def renameFile(self, nombre_del_archivo, inodo_del_directorio_actual, nuevo_nomb
     *el usuario corre rename <nombre>
     *Buscar el inodo de ese archivo
     *Cambiamos el nombre del inodo correspondiente al nuevo nombre
+    *Actualizamos la informacion dentro del directorio actual
     *Actualizamos archivo
    """
+   # LLAMAR A FUNCION ACTUALIZAR DIRECTORIO
     # actualizarArchivo
 
 
@@ -104,3 +107,59 @@ def actualizarArchivo(self, inodo_del_archivo, inodo_del_directorio_actual):
     *Modificamos la fecha de modificacion del inodo correspondiete
     *Modificamos el tamaño del inodo correspondiente
    """
+
+
+def crearDirectorio(self, nombre_del_directorio):
+    """
+    # El usuarios ingresa createdir <nombre_del_directorio>
+    # Se busca un directorio libre dentro del arreglo de directorios del usuario
+    # Obtener un inodo de la LIL este sera inodo_del_nuevo_directorio
+    # inodo_del_nuevo_directorio sera puesto dentro del primer directorio libre que se encuentre de la lista de directoris del usuario
+    # Se añadira el nombre_del_directorio al atributo de este directorio
+    # Se actualizara su atributo _Libre a False
+    # Actualizamos nuestra lista de inodos _Inodo con la inforamción que se acaba de ocupar
+    """
+
+
+def actualizarNombresDeArchivosEnDirectorios(self, inodo_del_directorio):
+    """ SE VA A UTILIZAR EN RENOMBRAR
+    * Se introduce el inodo del directorio al cual queremos actualizar los nombres de sus archivos
+    * Buscamos ese directorio dentro de nuestro lista de directorios _Directorio 
+    * (Buscamos en sus atributos _Inodo_del_directorio hasta que sea el mismo que el ingresado)
+    * Buscamos los inodos de sus archivos dentro del arreglo _Inodos[]
+    * Actualizamos los valores de _Nombre[] de acuerdo a su igual en el arreglo del usuario _Inodo[]
+    """
+
+
+def borrarDirectorio(self, inodo_del_directorio):
+    """
+    * Buscamos el directorio que corresponda con el inodo ingresado
+    * Inicializamos de vuelta todos sus valores a 0 o null
+    * Dar de baja la información de su inodo en el arreglo _Inodo del usuario
+    * Se devuelve su inodo a LIL
+    """
+
+
+def renombrarDirectorio(self, nombre_del_directorio, nuevo_nombre_del_directorio):
+    """ Algoritmo:
+    *el usuario corre renameDir <nombre>
+    *Buscar el inodo del del directorio deseado
+    *Cambiamos el nombre del directorio al nuevo nombre, para buscarlo usamos su inodo
+    *Actualizamos la informacion dentro del directorio actual
+    *Actualizamos fecha_de_modificacion y otras cosas (si hay mas cosas que actualizar)
+   """
+
+
+def moverADirectorio(self, nombre_del_siguiente_directorio):
+    """ Algoritmo:
+    * Se guarda el inodo del directorio actual en el atributio _Inodo_del_directorio_papa del usuario
+    * Buscamos el inodo del directorio siguiente en base a su nombre y se guarda en _InodoDelDirectorioActual del usuario
+    """
+
+
+def liberarInodo(self, inodo_a_liberar):
+    """ Algoritmo
+    * Usamos ese inodo_a_liberar como indice de _Inodo[] del usario
+    * Devolvemos todos sus atributos a 0 o null
+    * Se agrega ese inodo_a_liberar a _LIL[]
+    """
