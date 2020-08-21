@@ -7,6 +7,9 @@ class Directorio:
 
     def __init__(self):
         self._Libre = True
+        for i in range(10): # cada directorio tendra 10 archivos maximo
+            self._Inodo.append(-1)
+            self._Nombre.append("")
 
     def __str__(self):
         return "{} {} {}".format(self._Inodos, self._Nombre, self._Libre)

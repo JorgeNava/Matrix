@@ -123,8 +123,8 @@ def ls1(path):
 """
 VAMOS A GUARDAR TODA LA INFORMACIÓN DEL USUARIO ACTUAL DENTRO DE SU ARCHIVO MEMORIA
 def guardarPartida(actualUser):´
-*Arbiemos el archivo memoria del usuario
-*
+*Abrimos el archivo memoria del usuario
+*Escribismos toda la informacion de la estructura del usuario en su archivo de memoria 
 
 VAMOS A INICIALIZAR TODA LA INFORMACIÓN DEL ARCHIVO MEMORIA DEL USUARIO DENTRO DE SUS ESTRCUTURAS
 def cargarPartida(actualUser):

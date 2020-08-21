@@ -1,7 +1,7 @@
 from datetime import date
 from directorio import Directorio
 from inodos import Inodo
-
+import os
 lists_Size = 100
 
 
@@ -14,11 +14,13 @@ class Usuario:
     _Directorio = []
     _InodoDelDirectorioActual = 0
     _InodoDelDirectorioPapa = 0
-
+    _NombreDelDirectorioActual =""
     def __init__(self, _Nombre, _Contraseña):
         self._Nombre = _Nombre
         self._Contraseña = _Contraseña
         self._InodoDelDirectorioActual = 0
+        self._NombreDelDirectorioActual =_NombreDelDirectorioActual
+        self._InodoDelDirectorioPapa = 0
         for i in range(lists_Size):
             self._LIL.append(i)
             self._LBL.append(i)
@@ -64,6 +66,10 @@ def renameFile(self, nombre_del_archivo, inodo_del_directorio_actual, nuevo_nomb
     *Actualizamos la informacion dentro del directorio actual
     *Actualizamos archivo
    """
+    inodo_del_archivo = buscarInodoPorNombreArchivo(nombre_del_archivo)
+    self._Inodo[inodo_del_archivo]._Nombre = nuevo_nombre_del_archivo
+    actualizarNombresDeArchivosEnDirectorios(inodo_del_directorio_actual)
+    actualizarArchivo(inodo_del_archivo)
    # LLAMAR A FUNCION ACTUALIZAR DIRECTORIO
     # actualizarArchivo
 
@@ -92,22 +98,37 @@ def buscarInodoPorNombreArchivo(self, nombre_del_archivo):
     *Recorrer lista _Inodo hasta que el nombre de uno de ellos coincidia con el ingresado
     *devolver numero de inodo
    """
+    num_inodo =0
+    for inodo in self._Inodo:
+        if inodo._Nombre == nombre_del_archivo:
+            break
+        else:
+            num_inodo+=1
+    return num_inodo
 
 
-def buscar_inodo_del_dir_actual(self, nombre_del_directorio):
-    """ Algoritmo:
+def actualizar_dir_actual_cada_CD(self, nombre_del_directorio):
+    """ Algoritmo: ES PARA ACTUALIZAR EL ATRIBUTO _InodoDelDirectorioActual CADA VEZ QUE SE HAGA CD
     *Recorrer lista _Directorio hasta que el nombre de uno de ellos coincidia con el ingresado
     *devolver numero de inodo
    """
+   num_dir =0
+    for directorio in self._Directorio:
+        if directorio._NombreDir == nombre_del_directorio:
+            self._NombreDelDirectorioActual = nombre_del_directorio
+            self._InodoDelDirectorioActual = num_dir
+            break
+        else:
+            num_dir+=1
 
-
-def actualizarArchivo(self, inodo_del_archivo, inodo_del_directorio_actual):
+def actualizarArchivo(self, inodo_del_archivo):
     """ Algoritmo:
     *Es llamado por otras funciones
     *Modificamos la fecha de modificacion del inodo correspondiete
     *Modificamos el tamaño del inodo correspondiente
    """
-
+    self._Inodo[inodo_del_archivo]._Fecha_ult_modificacion = day.today().strftime("%d/%m/%Y")
+    self._Inodo[inodo_del_archivo]._Tamanio = os.path.getsize(os.path.abspath(self._NombreDelDirectorioActual+"/"+self._Inodo[inodo_del_archivo]._Nombre+".txt")) 
 
 def crearDirectorio(self, nombre_del_directorio):
     """
@@ -121,15 +142,25 @@ def crearDirectorio(self, nombre_del_directorio):
     """
 
 
-def actualizarNombresDeArchivosEnDirectorios(self, inodo_del_directorio):
+def actualizarNombresDeArchivosEnDirectorios():
     """ SE VA A UTILIZAR EN RENOMBRAR
     * Se introduce el inodo del directorio al cual queremos actualizar los nombres de sus archivos
     * Buscamos ese directorio dentro de nuestro lista de directorios _Directorio 
-    * (Buscamos en sus atributos _Inodo_del_directorio hasta que sea el mismo que el ingresado)
     * Buscamos los inodos de sus archivos dentro del arreglo _Inodos[]
     * Actualizamos los valores de _Nombre[] de acuerdo a su igual en el arreglo del usuario _Inodo[]
     """
-
+    numDir = 0
+    numNombre = 0
+    for directorio_a_comparar in self._Directorio:
+        if self._InodoDelDirectorioActual == directorio_a_comparar._InodoDir: # se selecciona el directorio que vamos a usar
+            for inodoDentroDelDirectorio in directorio_a_comparar._Inodos:
+                if inodoDentroDelDirectorio != -1: # se filtran los inodos que estan ligados a archivos 
+                    self._Directorio[numDir]._Nombre[numNombre] = self._Inodo[inodoDentroDelDirectorio]._Nombre
+                    numNombre+=1
+                else:
+                    break
+        numDir+=1
+            
 
 def borrarDirectorio(self, inodo_del_directorio):
     """
