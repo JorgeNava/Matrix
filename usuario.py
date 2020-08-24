@@ -14,6 +14,7 @@ class Usuario:
     _Directorio = []
     _InodoDelDirectorioActual = 0
     _InodoDelDirectorioPapa = 0
+    _PathDirectorios = []
     _NombreDelDirectorioActual =""
     def __init__(self, _Nombre, _Contraseña):
         self._Nombre = _Nombre
@@ -21,6 +22,7 @@ class Usuario:
         self._InodoDelDirectorioActual = 0
         self._NombreDelDirectorioActual =_NombreDelDirectorioActual
         self._InodoDelDirectorioPapa = 0
+        self._PathDirectorios.append({0:"root"})
         for i in range(lists_Size):
             self._LIL.append(i)
             self._LBL.append(i)
@@ -28,7 +30,7 @@ class Usuario:
             self._Directorio.append(Directorio())
 
 
-def crearArchivo(self, nombre_del_archivo, inodo_del_directorio_actual):
+def crearArchivo(self, nombre_del_archivo):
     """ Algoritmo:
     *el usuario corre creatf <nombre>
     *Se saca el primer inodo de LIL
@@ -39,7 +41,7 @@ def crearArchivo(self, nombre_del_archivo, inodo_del_directorio_actual):
     SE USARA EN CREATF Y COPY
     """
     # Extremos el primer Inodo libre de LIL
-    inodo_del_nuevo_archivo = self._LIL[0].pop
+    inodo_del_nuevo_archivo = self._LIL.pop(0)
 
     # Asignamos los nuevos valores al inodo extraido
     self._Inodo[inodo_del_nuevo_archivo]._Nombre = nombre_del_archivo
@@ -50,15 +52,17 @@ def crearArchivo(self, nombre_del_archivo, inodo_del_directorio_actual):
     self._Inodo[inodo_del_nuevo_archivo]._Libre = False
     self._Inodo[inodo_del_nuevo_archivo]._Permisos = "rwx"
 
+    #buscamos indice en directorio
+    indice_del_directorio_actual=buscarIndiceDeDirectorioPorInodo(self._InodoDelDirectorioActual)
     # Asignamos los nuevos valores al directorio correspondiente
-    self._Directorio[inodo_del_directorio_actual]._Inodos.append(
+    self._Directorio[indice_del_directorio_actual]._Inodos.append(
         inodo_del_nuevo_archivo)
-    self._Directorio[inodo_del_directorio_actual]._Nombre.append(
+    self._Directorio[indice_del_directorio_actual]._Nombre.append(
         nombre_del_archivo)
-    self._Directorio[inodo_del_directorio_actual]._Libre = False
+    self._Directorio[indice_del_directorio_actual]._Libre = False
 
 
-def renameFile(self, nombre_del_archivo, inodo_del_directorio_actual, nuevo_nombre_del_archivo):
+def renameFile(self, nombre_del_archivo, nuevo_nombre_del_archivo):
     """ Algoritmo:
     *el usuario corre rename <nombre>
     *Buscar el inodo de ese archivo
@@ -68,13 +72,13 @@ def renameFile(self, nombre_del_archivo, inodo_del_directorio_actual, nuevo_nomb
    """
     inodo_del_archivo = buscarInodoPorNombreArchivo(nombre_del_archivo)
     self._Inodo[inodo_del_archivo]._Nombre = nuevo_nombre_del_archivo
-    actualizarNombresDeArchivosEnDirectorios(inodo_del_directorio_actual)
+    actualizarNombresDeArchivosEnDirectorios(self._InodoDelDirectorioActual)
     actualizarArchivo(inodo_del_archivo)
    # LLAMAR A FUNCION ACTUALIZAR DIRECTORIO
     # actualizarArchivo
 
 
-def borrarArchivo(self, nombre_del_archivo, inodo_del_directorio_actual):
+def borrarArchivo(self, nombre_del_archivo):
     """ Algoritmo:
     *Buscamos el inodo del archivo que se desea borrar
     *Borramos la información de este archivo del directorio en el que se encuentre (dir_actual)
@@ -82,15 +86,32 @@ def borrarArchivo(self, nombre_del_archivo, inodo_del_directorio_actual):
     *Liberar el inodo que poseia 
     *Agregar inodo liberado a LIL
    """
+   numDirectorio =0
+   numInodo = 0
+   inodo_del_archivo = buscarInodoPorNombreArchivo(nombre_del_archivo)
+   for directorio in self._Directorio:
+        if directorio._InodoDir == self._InodoDelDirectorioActual:
+           for inodoArchivo in directorio._Inodos:
+                if inodoArchivo == numInodo:
+                    self._Directorio[numDirectorio]._Inodos[numInodo] = -1
+                    self._Directorio[numDirectorio]._Nombre[numInodo] = ""
+                else:
+                    numInodo+=1
+        else:
+            numDirectorio+=1
+    
+    #Mandamos llamar a liberar inodo
+    liberarInodo(inodo_del_archivo)
 
 
-def editFile(self, nombre_del_archivo, inodo_del_directorio_actual, nuevo_nombre_del_archivo):
+def editFile(self, nombre_del_archivo):
     """ Algoritmo:
     *el usuario corre edit <nombre>
     *Buscar el inodo de ese archivo
     *Actualizamos archivo
    """
-    # actualizarArchivo
+    inodoDelArchivo =buscarInodoPorNombreArchivo(nombre_del_archivo)
+    actualizarArchivo(inodoDelArchivo)
 
 
 def buscarInodoPorNombreArchivo(self, nombre_del_archivo):
@@ -109,17 +130,20 @@ def buscarInodoPorNombreArchivo(self, nombre_del_archivo):
 
 def actualizar_dir_actual_cada_CD(self, nombre_del_directorio):
     """ Algoritmo: ES PARA ACTUALIZAR EL ATRIBUTO _InodoDelDirectorioActual CADA VEZ QUE SE HAGA CD
-    *Recorrer lista _Directorio hasta que el nombre de uno de ellos coincidia con el ingresado
-    *devolver numero de inodo
+    *Si el nombre del archivo es .. eliminamos el directorio del diccionario y a inodo actual asignamos los valores del diccionario
+    *Si el nombre del archivo es diferente de .. Recorrer lista _Directorio hasta que el nombre de uno de ellos coincidia con el ingresado
    """
-   num_dir =0
-    for directorio in self._Directorio:
-        if directorio._NombreDir == nombre_del_directorio:
-            self._NombreDelDirectorioActual = nombre_del_directorio
-            self._InodoDelDirectorioActual = num_dir
-            break
-        else:
-            num_dir+=1
+    if nombre_del_directorio == "..":
+        self._PathDirectorio.pop(len(self._PathDirectorio-1))
+        self._InodoDelDirectorioActual = self._PathDirectorio[len(self._PathDirectorio-1)].keys()
+        self._NombreDelDirectorioActual = self._PathDirectorio[len(self._PathDirectorio-1)].values()
+    else:
+        for directorio in self._Directorio:
+            if directorio._NombreDir == nombre_del_directorio:
+                self._PathDirectorio.append({directorio._InodoDir:directorio._NombreDir})
+                self._NombreDelDirectorioActual = nombre_del_directorio
+                self._InodoDelDirectorioActual = directorio._InodoDir
+                break
 
 def actualizarArchivo(self, inodo_del_archivo):
     """ Algoritmo:
@@ -140,7 +164,22 @@ def crearDirectorio(self, nombre_del_directorio):
     # Se actualizara su atributo _Libre a False
     # Actualizamos nuestra lista de inodos _Inodo con la inforamción que se acaba de ocupar
     """
-
+    numDir=0
+    for directorioLibre in self-_Directorio:
+        if directorioLibre._Libre == True:
+            inodo_del_nuevo_directorio = self._LIL.pop(0)
+            self._Directorio[numDir]._InodoDir = inodo_del_nuevo_directorio
+            self._Directorio[numDir]._NombreDir = nombre_del_directorio
+            self._Directorio[numDir]._Libre = False
+            #Se actualiza Inodo ahora
+            self._Inodo[inodo_del_nuevo_directorio]._Nombre = nombre_del_directorio
+            self._Inodo[inodo_del_nuevo_directorio]._Fecha_de_creacion = date.today().strftime("%d/%m/%Y")
+            self._Inodo[inodo_del_nuevo_directorio]._Fecha_ult_modificacion = date.today().strftime("%d/%m/%Y")
+            self._Inodo[inodo_del_nuevo_directorio]._Libre = False
+            self._Inodo[inodo_del_nuevo_directorio]._Permisos = "rwx"
+            break
+        else:
+            numDir+=1
 
 def actualizarNombresDeArchivosEnDirectorios():
     """ SE VA A UTILIZAR EN RENOMBRAR
@@ -162,14 +201,27 @@ def actualizarNombresDeArchivosEnDirectorios():
         numDir+=1
             
 
-def borrarDirectorio(self, inodo_del_directorio):
+def borrarDirectorio(self, nombre_del_directorio):
     """
-    * Buscamos el directorio que corresponda con el inodo ingresado
+    * Buscamos el directorio que corresponda con el nombre ingresado
     * Inicializamos de vuelta todos sus valores a 0 o null
     * Dar de baja la información de su inodo en el arreglo _Inodo del usuario
     * Se devuelve su inodo a LIL
     """
-
+    numDir=0
+    inodo_del_directorio= buscarInodoPorNombreArchivo(nombre_del_directorio)
+    for directorio in self._Directorio:
+        if directorio._InodoDir == inodo_del_directorio:
+            self._Directorio[numDir]._InodoDir = -1
+            self._Directorio[numDir]._NombreDir = ""
+            self._Directorio[numDir]._Libre = True
+            self._Directorio[numDir]._Inodos.clear()
+            self._Directorio[numDir]._Nombre.clear()
+            break
+         ''' * Dar de baja la información de su inodo en el arreglo _Inodo del usuario
+            * Se devuelve su inodo a LIL'''
+        else:
+            numDir+=1
 
 def renombrarDirectorio(self, nombre_del_directorio, nuevo_nombre_del_directorio):
     """ Algoritmo:
@@ -180,17 +232,24 @@ def renombrarDirectorio(self, nombre_del_directorio, nuevo_nombre_del_directorio
     *Actualizamos fecha_de_modificacion y otras cosas (si hay mas cosas que actualizar)
    """
 
-
-def moverADirectorio(self, nombre_del_siguiente_directorio):
-    """ Algoritmo:
-    * Se guarda el inodo del directorio actual en el atributio _Inodo_del_directorio_papa del usuario
-    * Buscamos el inodo del directorio siguiente en base a su nombre y se guarda en _InodoDelDirectorioActual del usuario
-    """
-
-
 def liberarInodo(self, inodo_a_liberar):
     """ Algoritmo
     * Usamos ese inodo_a_liberar como indice de _Inodo[] del usario
     * Devolvemos todos sus atributos a 0 o null
     * Se agrega ese inodo_a_liberar a _LIL[]
     """
+    self._Inodo[inodo_a_liberar]._Nombre = ""
+    self._Inodo[inodo_a_liberar]._Tamanio = 0
+    self._Inodo[inodo_a_liberar]._Fecha_de_creacion = ""
+    self._Inodo[inodo_a_liberar]._Fecha_ult_modificacion = ""
+    self._Inodo[inodo_a_liberar]._Libre = True
+    self._Inodo[inodo_a_liberar]._Permisos = ""
+    self._LIL.append(inodo_a_liberar)
+def buscarIndiceDeDirectorioPorInodo(self,inodo_del_directorio):
+    numDirectorio =0
+    for directorio in self._Directorio:
+            if directorio._InodoDir == inodo_del_directorio:
+                break
+            else:
+                numDirectorio+=1
+    return numDirectorio
