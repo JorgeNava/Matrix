@@ -86,12 +86,12 @@ def borrarArchivo(self, nombre_del_archivo):
     *Liberar el inodo que poseia 
     *Agregar inodo liberado a LIL
    """
-   numDirectorio =0
-   numInodo = 0
-   inodo_del_archivo = buscarInodoPorNombreArchivo(nombre_del_archivo)
-   for directorio in self._Directorio:
+    numDirectorio =0
+    numInodo = 0
+    inodo_del_archivo = buscarInodoPorNombreArchivo(nombre_del_archivo)
+    for directorio in self._Directorio:
         if directorio._InodoDir == self._InodoDelDirectorioActual:
-           for inodoArchivo in directorio._Inodos:
+            for inodoArchivo in directorio._Inodos:
                 if inodoArchivo == numInodo:
                     self._Directorio[numDirectorio]._Inodos[numInodo] = -1
                     self._Directorio[numDirectorio]._Nombre[numInodo] = ""
@@ -99,7 +99,7 @@ def borrarArchivo(self, nombre_del_archivo):
                     numInodo+=1
         else:
             numDirectorio+=1
-    
+
     #Mandamos llamar a liberar inodo
     liberarInodo(inodo_del_archivo)
 
@@ -218,8 +218,8 @@ def borrarDirectorio(self, nombre_del_directorio):
             self._Directorio[numDir]._Inodos.clear()
             self._Directorio[numDir]._Nombre.clear()
             break
-         ''' * Dar de baja la información de su inodo en el arreglo _Inodo del usuario
-            * Se devuelve su inodo a LIL'''
+    #* Dar de baja la información de su inodo en el arreglo _Inodo del usuario 
+    # * Se devuelve su inodo a LIL
         else:
             numDir+=1
 
