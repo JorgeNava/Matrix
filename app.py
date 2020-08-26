@@ -38,7 +38,7 @@ def login():
                 actualUser._Inodo = u._Inodo
                 actualUser._Directorio = u._Directorio
                 actualUser._InodoDelDirectorioActual = u._InodoDelDirectorioActual
-        pathDirectorioActual ="./files/"+actualUser._Nombre
+        pathDirectorioActual = "./files/"+actualUser._Nombre
     return render_template("login.html")
 
 
@@ -56,31 +56,32 @@ def terminal():
             file_handler.close()
             # actualUser.crearArchivo(comando_seccionado[1],funcion_que_devuelve_inodo_del_dir_Actual)
         elif comando_seccionado[0] == "cd":
-            if comando_seccionado[1]== ".." or comando_seccionado[1]== "../":
-                separarPath =pathDirectorioActual.split("/")
+            if comando_seccionado[1] == ".." or comando_seccionado[1] == "../":
+                separarPath = pathDirectorioActual.split("/")
                 words = 0
-                pathDirectorioActual =""
+                pathDirectorioActual = ""
                 for word in separarPath:
                     if words < len(separarPath)-1:
-                        words+=1
-                        pathDirectorioActual +=  word + "/"
+                        words += 1
+                        pathDirectorioActual += word + "/"
                     else:
                         pathDirectorioActual.rstrip("/")
                         break
             else:
-                pathDirectorioActual += "/"+comando_seccionado[1] 
-            print("path directorio actual"+pathDirectorioActual)   
+                pathDirectorioActual += "/"+comando_seccionado[1]
+            print("path directorio actual"+pathDirectorioActual)
         elif(comando_seccionado[0] == "createdir"):
-            nombre_del_directorio = pathDirectorioActual +"/"+ comando_seccionado[1]
+            nombre_del_directorio = pathDirectorioActual + \
+                "/" + comando_seccionado[1]
             os.mkdir(nombre_del_directorio)
         elif(comando_seccionado[0] == "edit"):
-            nombre_del_archivo = pathDirectorioActual+"/" + \
+            nombre_del_archivo = pathDirectorioActual + "/" + \
                 comando_seccionado[1] + ".txt"
             file_handler = open(nombre_del_archivo, 'a')
             file_handler.write(comando_seccionado[2]+"\n")
             file_handler.close()
         elif(comando_seccionado[0] == "delete"):
-            nombre_del_archivo = "./files/"+actualUser._Nombre+"/" + \
+            nombre_del_archivo = pathDirectorioActual + "/" + \
                 comando_seccionado[1] + ".txt"
             os.remove(nombre_del_archivo)
         elif(comando_seccionado[0] == "deletedir"):
