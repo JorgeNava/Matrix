@@ -50,10 +50,16 @@ function inputCommandTerminal() {
                 createf(comandoSeccionado[1])
                 break
             case "createdir":
-                createdir(comandoSeccionado[1])
+                crearDirectorio(comandoSeccionado[1])
+                break
+            case "renamedir":
+                renameDir(comandoSeccionado[1], comandoSeccionado[2])
                 break
             case "delete":
                 deleteFile(comandoSeccionado[1])
+                break
+            case "deletedir":
+                deleteDir(comandoSeccionado[1])
                 break
             case "rename":
                 renameFile(comandoSeccionado[1], comandoSeccionado[2])
@@ -63,6 +69,9 @@ function inputCommandTerminal() {
                 break
             case "ls":
                 listFiles()
+                break
+            case "cd":
+                moverse(comandoSeccionado[1])
                 break
             default:
                 matrixTerminal.print('"' + comando + '" no es un comando reconocido...')
@@ -76,11 +85,24 @@ function inputCommandTerminal() {
     })
 }
 
+function moverse(nombre_del_archivo) {
+    //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
+    parametros_a_enviar = "comando_a_enviar=cd-" + nombre_del_archivo;
+    send_request_to_python(parametros_a_enviar);
+}
+
 //Creara un archivo
 function createf(nombre_del_archivo) {
     matrixTerminal.print("creating " + nombre_del_archivo + "...")
     //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
     parametros_a_enviar = "comando_a_enviar=createf-" + nombre_del_archivo;
+    send_request_to_python(parametros_a_enviar);
+}
+//Creara un directorio
+function crearDirectorio(nombre_del_archivo) {
+    matrixTerminal.print("creating " + nombre_del_archivo + "...")
+    //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
+    parametros_a_enviar = "comando_a_enviar=createdir-" + nombre_del_archivo;
     send_request_to_python(parametros_a_enviar);
 }
 //Copiara un archivo
@@ -99,6 +121,14 @@ function renameFile(nombre_del_archivo_viejo, nombre_del_archivo_nuevo) {
     send_request_to_python(parametros_a_enviar);
 }
 
+//Renombrara un directorio
+function renameDir(nombre_del_archivo_viejo, nombre_del_archivo_nuevo) {
+    matrixTerminal.print("renaming directory " + nombre_del_archivo_viejo + " to " + nombre_del_archivo_nuevo)
+    //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
+    parametros_a_enviar = "comando_a_enviar=renamedir-" + nombre_del_archivo_viejo + "-" + nombre_del_archivo_nuevo;
+    send_request_to_python(parametros_a_enviar);
+}
+
 //Abrira y escribira el contenido de un archivo
 function edit(nombre_del_archivo, texto_a_agregar) {
     matrixTerminal.print("openning " + nombre_del_archivo + " for edition...")
@@ -111,6 +141,12 @@ function edit(nombre_del_archivo, texto_a_agregar) {
 function deleteFile(nombre_del_archivo) {
     matrixTerminal.print("deleting file:" + nombre_del_archivo)
     parametros_a_enviar = "comando_a_enviar=delete-" + nombre_del_archivo;
+    send_request_to_python(parametros_a_enviar);
+}
+//Eliminara un directorio
+function deleteDir(nombre_del_archivo) {
+    matrixTerminal.print("deleting directory " + nombre_del_archivo)
+    parametros_a_enviar = "comando_a_enviar=deletedir-" + nombre_del_archivo;
     send_request_to_python(parametros_a_enviar);
 }
 
@@ -139,12 +175,6 @@ function readFile(nombre_del_archivo) {
     })
 }
 
-
-//Creara un directorio
-function createdir(nombre_del_archivo) {
-    matrixTerminal.print("creating " + nombre_del_archivo + "...")
-    //Debe conectarse con escribirEnArchivo.py
-}
 
 //Imprimir todos los nombre y pesos de los archivos que tenemos en el directorio en el que nos encotramos
 function listFiles() {
