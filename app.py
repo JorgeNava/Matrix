@@ -50,22 +50,22 @@ def terminal():
     if (comando_recibido is not None):
         comando_seccionado = comando_recibido.split("-")
         if(comando_seccionado[0] == "createf"):
-            nombre_del_archivo = pathDirectorioActual + \
-                "/" + comando_seccionado[1] + ".txt"
-            file_handler = open(nombre_del_archivo, 'w')
+            nombre_del_archivo = comando_seccionado[1] + ".txt"
+            path_del_archivo = pathDirectorioActual + \
+                "/" + nombre_del_archivo
+            file_handler = open(path_del_archivo, 'w')
             file_handler.close()
             # Registramos el archivo en la estructura
-            nombre_del_archivo_a_registrar = comando_seccionado[1] + ".txt"
-            actualUser.crearArchivo(nombre_del_archivo_a_registrar)
-            '''for i in range(1):
-                print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ \
+            actualUser.crearArchivo(nombre_del_archivo)
+            """for i in range(1):
+                print("Nombre archivo: " + actualUser._Inodo[i]._Nombre)
+                print("Fecha de creación: " +
                       actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ \
+                print("Fecha de ult modificación: " +
                       actualUser._Inodo[i]._Fecha_ult_modificacion)
-                print("Libre: "+ str(actualUser._Inodo[i]._Libre))
+                print("Libre: " + str(actualUser._Inodo[i]._Libre))
                 print(actualUser._Directorio[0]._Nombre)
-                print(actualUser._Directorio[0]._Inodos)'''
+                print(actualUser._Directorio[0]._Inodos)"""
         elif comando_seccionado[0] == "cd":
             if comando_seccionado[1] == ".." or comando_seccionado[1] == "../":
                 separarPath = pathDirectorioActual.split("/")
@@ -271,7 +271,6 @@ def dataManager():
                         dir_files.rsplit(".")[0])
                 dir_content[inodo_de_archivo] = dir_content.get(
                     inodo_de_archivo, dir_files)
-            print(dir_content)
             return dir_content
 
 

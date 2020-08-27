@@ -194,9 +194,11 @@ function listFiles() {
             console.log(contenido_archivo)
             matrixTerminal.print("Files found: ")
 
-            let countKey = Object.keys(contenido_archivo).length, i;
-            for (i = 0; i < countKey; i++) {
-                matrixTerminal.print(">> " + contenido_archivo[i])
+            let inodo_del_archivo = Object.keys(contenido_archivo)
+            let nombre_del_archivo = Object.values(contenido_archivo)
+
+            for (i = 0; i < nombre_del_archivo.length; i++) {
+                matrixTerminal.print(">> " + inodo_del_archivo[i] + "\t" + nombre_del_archivo[i])
             }
         }
     })

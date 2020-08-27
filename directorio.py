@@ -1,12 +1,14 @@
 class Directorio:
-    _NombreDir = ""  # Nombre del directorio
-    _InodoDir = 0  # Inodo del directorio
-    _Inodos = []  # Inodos de los archivos que guarda este directorio
-    _Nombre = []  # Nombre de los archivos que guarda este directorio
-    _Libre = True  # Estado del directorio 0 si no existe ese, 1 si ya existe
 
     def __init__(self):
-        self._Libre = True
+        self. _NombreDir = ""  # Nombre del directorio
+        self._InodoDir = 0  # Inodo del directorio
+        self._Libre = True  # Estado del directorio 0 si no existe ese, 1 si ya existe        self. _Inodos = []  # Inodos de los archivos que guarda este directorio
+        self._Nombre = []  # Nombre de los archivos que guarda este directorio
+        self._Inodos = []  # Inodos de los archivos que guarda este directorio
+        self.myInit()
+
+    def myInit(self):
         # cada directorio tendra 10 archivos maximo
         for i in range(10):
             self._Inodos.append(-1)

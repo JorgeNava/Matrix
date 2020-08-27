@@ -6,40 +6,37 @@ lists_Size = 100
 
 
 class Usuario:
-    _Nombre = ""
-    _Contraseña = ""
-    _LIL = []
-    _LBL = []
-    _Inodo = []
-    _Directorio = []
-    _InodoDelDirectorioActual = 0
-    _InodoDelDirectorioPapa = 0
-    _PathDirectorios = []
-    _NombreDelDirectorioActual = ""
 
     def __init__(self, _Nombre, _Contraseña):
         self._Nombre = _Nombre
         self._Contraseña = _Contraseña
-        self._InodoDelDirectorioActual = 31
-        self._InodoDelDirectorioPapa = 41
+        self._InodoDelDirectorioActual = 41
+        self._InodoDelDirectorioPapa = 31
         self._NombreDelDirectorioActual = ""
+        self._LIL = []
+        self._LBL = []
+        self._Inodo = []
+        self._Directorio = []
+        self._PathDirectorios = []
+        self.myInit()
+
+    def myInit(self):
         self._PathDirectorios.append({0: self._Nombre})
         for i in range(lists_Size):
             self._LIL.append(i)
             self._LBL.append(i)
             self._Inodo.append(Inodo("", 0, "", "", True, ""))
             self._Directorio.append(Directorio())
+        # Inicializar directorio "root"/"Nombre_Usuario"
+        # self.crearArchivo(self._Nombre)
 
     def crearArchivo(self, nombre_del_archivo):
-        """
-        Algoritmo:
-        *el usuario corre creatf <nombre>
-        *Se saca el primer inodo de LIL
-        *Se crea el objeto inodo con sus respectivos datos para ese archivo
-        *Se añade en el directorio correspondiente la información del nuevo archivo (inodo, nombre)
-        """
-        """
-        SE USARA EN CREATF Y COPY
+        """ 
+            Algoritmo (En createf y copy):
+            *el usuario corre creatf <nombre>
+            *Se saca el primer inodo de LIL
+            *Se crea el objeto inodo con sus respectivos datos para ese archivo
+            *Se añade en el directorio correspondiente la información del nuevo archivo (inodo, nombre)
         """
         # Extremos el primer Inodo libre de LIL
         inodo_del_nuevo_archivo = self._LIL.pop(0)
@@ -75,18 +72,18 @@ class Usuario:
 
     def renameFile(self, nombre_del_archivo, nuevo_nombre_del_archivo):
         """ Algoritmo:
-        *el usuario corre rename <nombre>
-        *Buscar el inodo de ese archivo
-        *Cambiamos el nombre del inodo correspondiente al nuevo nombre
-        *Actualizamos la informacion dentro del directorio actual
-        *Actualizamos archivo
-    """
+            *el usuario corre rename <nombre>
+            *Buscar el inodo de ese archivo
+            *Cambiamos el nombre del inodo correspondiente al nuevo nombre
+            *Actualizamos la informacion dentro del directorio actual
+            *Actualizamos archivo
+        """
         inodo_del_archivo = self.buscarInodoPorNombreArchivo(
             nombre_del_archivo)
         self._Inodo[inodo_del_archivo]._Nombre = nuevo_nombre_del_archivo
         self.actualizarNombresDeArchivosEnDirectorios()
         self.actualizarArchivo(inodo_del_archivo)
-    # LLAMAR A FUNCION ACTUALIZAR DIRECTORIO
+        # LLAMAR A FUNCION ACTUALIZAR DIRECTORIO
         # actualizarArchivo
 
     def borrarArchivo(self, nombre_del_archivo):
@@ -135,18 +132,14 @@ class Usuario:
                 break
             else:
                 num_inodo += 1
-        if nombre_del_archivo == "PRUEBA2":
+        if nombre_del_archivo == "dirA":
             num_inodo = 99
-        elif nombre_del_archivo == "PUEBA":
+        elif nombre_del_archivo == "dirB":
             num_inodo = 98
-        elif nombre_del_archivo == "Gustavo":
+        elif nombre_del_archivo == "fileC":
             num_inodo = 97
-        elif nombre_del_archivo == "prueba3":
+        elif nombre_del_archivo == "fileD":
             num_inodo = 96
-        elif nombre_del_archivo == "sali":
-            num_inodo = 95
-        elif nombre_del_archivo == "salp":
-            num_inodo = 94
         return num_inodo
 
     def actualizar_dir_actual_cada_CD(self, nombre_del_directorio):
