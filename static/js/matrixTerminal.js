@@ -192,7 +192,7 @@ function listFiles() {
         dataType: "JSON",
         success: function (contenido_archivo) {
             console.log(contenido_archivo)
-            matrixTerminal.print("Files founded: ")
+            matrixTerminal.print("Files found: ")
 
             let countKey = Object.keys(contenido_archivo).length, i;
             for (i = 0; i < countKey; i++) {
