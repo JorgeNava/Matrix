@@ -39,20 +39,9 @@ print(testObje._Inodo[0]._Tamanio)
 FALTA
     PRIORIDAD CONCEPTO
     2   |   GUARDAR INFORMACION EN MEMORIA
-    2   |   EXTRAER INFORMACION DE MEMORIA
+    2   |   EXTRAER INFORMACION DE MEMORIA - LINEA 31 usuario.py
     2   |   METER FUNCIONES DE REGISTROS EN app.py (GUSTAVO)
     3   |   CREAR COMANDO PARA MOSTRAR EN QUE CARPETA ESTAMOS
     4   |   CREAR COMANDO PARA ABRIR ARCHIVO TXT start <file_name> usando os.startfile('file.txt')
     5   |   POSIBLE (CREAR COMANDO PARA MOVER ARCHIVO DE LUGAR)
-"""
-"""
-class testClass:
-
-    def __init__(self):
-        self._Directorio = []
-
-    def myInit(self):
-        for i in range(100):
-            self._Directorio.append(Directorio())
-            # print(len(testObje._Directorio[i]._Inodos))
 """

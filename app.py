@@ -50,6 +50,7 @@ def terminal():
     if (comando_recibido is not None):
         comando_seccionado = comando_recibido.split("-")
         if(comando_seccionado[0] == "createf"):
+            # LISTO
             nombre_del_archivo = comando_seccionado[1] + ".txt"
             path_del_archivo = pathDirectorioActual + \
                 "/" + nombre_del_archivo
@@ -57,17 +58,12 @@ def terminal():
             file_handler.close()
             # Registramos el archivo en la estructura
             actualUser.crearArchivo(nombre_del_archivo)
-            """for i in range(1):
-                print("Nombre archivo: " + actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: " +
-                      actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: " +
-                      actualUser._Inodo[i]._Fecha_ult_modificacion)
-                print("Libre: " + str(actualUser._Inodo[i]._Libre))
-                print(actualUser._Directorio[0]._Nombre)
-                print(actualUser._Directorio[0]._Inodos)"""
         elif comando_seccionado[0] == "cd":
-            if comando_seccionado[1] == ".." or comando_seccionado[1] == "../":
+            # LISTO
+            nombre_del_directorio = comando_seccionado[1]
+            path_del_directorio = pathDirectorioActual + \
+                "/" + nombre_del_directorio
+            if nombre_del_directorio == ".." or nombre_del_directorio == "../":
                 separarPath = pathDirectorioActual.split("/")
                 words = 0
                 pathDirectorioActual = ""
@@ -80,30 +76,14 @@ def terminal():
                         break
             else:
                 pathDirectorioActual += "/"+comando_seccionado[1]
-            '''
-            PENDIENTE
-            print("Inodo del directorio actual: "+ \
-                  actualUser._InodoDelDirectorioActual)
-            actualUser.actualizar_dir_actual_cada_CD(comando_seccionado[1])
-            print("Inodo del directorio actual: "+actualUser._InodoDelDirectorioActual)'''
+            actualUser.actualizar_dir_actual_cada_CD(nombre_del_directorio)
         elif(comando_seccionado[0] == "createdir"):
-            nombre_del_directorio = pathDirectorioActual + \
-                "/" + comando_seccionado[1]
-            os.mkdir(nombre_del_directorio)
-            nombre_del_directorio_a_registrar = comando_seccionado[1]
-            actualUser.crearDirectorio(nombre_del_directorio_a_registrar)
-            '''for i in range(5):
-                print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ \
-                      actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ \
-                      actualUser._Inodo[i]._Fecha_ult_modificacion)
-                print("Libre: "+ str(actualUser._Inodo[i]._Libre))
-                print("Nombre directorio: "+ \
-                      actualUser._Directorio[i]._NombreDir)
-                print("inodo directorio: "+ \
-                      str(actualUser._Directorio[i]._InodoDir))
-                CHECAR SI LA LIL DEBE EMPEZAR EN 0 O 1'''
+            # LISTO
+            nombre_del_directorio = comando_seccionado[1]
+            path_del_directorio = pathDirectorioActual + \
+                "/" + nombre_del_directorio
+            os.mkdir(path_del_directorio)
+            actualUser.crearDirectorio(nombre_del_directorio)
         elif(comando_seccionado[0] == "edit"):
             nombre_del_archivo = pathDirectorioActual + \
                 "/" + comando_seccionado[1] + ".txt"

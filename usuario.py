@@ -10,8 +10,8 @@ class Usuario:
     def __init__(self, _Nombre, _Contraseña):
         self._Nombre = _Nombre
         self._Contraseña = _Contraseña
-        self._InodoDelDirectorioActual = 41
-        self._InodoDelDirectorioPapa = 31
+        self._InodoDelDirectorioActual = 0
+        self._InodoDelDirectorioPapa = 0
         self._NombreDelDirectorioActual = ""
         self._LIL = []
         self._LBL = []
@@ -27,11 +27,12 @@ class Usuario:
             self._LBL.append(i)
             self._Inodo.append(Inodo("", 0, "", "", True, ""))
             self._Directorio.append(Directorio())
-        # Inicializar directorio "root"/"Nombre_Usuario"
-        # self.crearArchivo(self._Nombre)
+        # Creación directorio "root"/"Nombre_Usuario"
+        # Esta parte es MUY PROBABLE QUE DEBA SER CAMBIADA POR EXTRAER LA INFO DE MEMORIA
+        self.crearArchivo(self._Nombre)
 
     def crearArchivo(self, nombre_del_archivo):
-        """ 
+        """ LISTO
             Algoritmo (En createf y copy):
             *el usuario corre creatf <nombre>
             *Se saca el primer inodo de LIL
@@ -40,6 +41,7 @@ class Usuario:
         """
         # Extremos el primer Inodo libre de LIL
         inodo_del_nuevo_archivo = self._LIL.pop(0)
+        print(self._LIL[0])
 
         # Asignamos los nuevos valores al inodo extraido
         self._Inodo[inodo_del_nuevo_archivo]._Nombre = nombre_del_archivo
@@ -54,20 +56,14 @@ class Usuario:
         indice_del_directorio_actual = self.buscarIndiceDeDirectorioPorInodo(
             self._InodoDelDirectorioActual)
         # Asignamos los nuevos valores al directorio correspondiente
-        numInodoDir = 0
-        numNombreDir = 0
+        numArchivo = 0
         for inodoFile in self._Directorio[indice_del_directorio_actual]._Inodos:
             if inodoFile == -1:
-                self._Directorio[indice_del_directorio_actual]._Inodos[numInodoDir] = inodo_del_nuevo_archivo
+                self._Directorio[indice_del_directorio_actual]._Inodos[numArchivo] = inodo_del_nuevo_archivo
+                self._Directorio[indice_del_directorio_actual]._Nombre[numArchivo] = nombre_del_archivo
                 break
             else:
-                numInodoDir += 1
-        for NombreFile in self._Directorio[indice_del_directorio_actual]._Nombre:
-            if NombreFile == "":
-                self._Directorio[indice_del_directorio_actual]._Nombre[numNombreDir] = nombre_del_archivo
-                break
-            else:
-                numNombreDir += 1
+                numArchivo += 1
         self._Directorio[indice_del_directorio_actual]._Libre = False
 
     def renameFile(self, nombre_del_archivo, nuevo_nombre_del_archivo):
@@ -148,22 +144,22 @@ class Usuario:
         *Si el nombre del archivo es diferente de .. Recorrer lista _Directorio hasta que el nombre de uno de ellos coincidia con el ingresado
         """
         if nombre_del_directorio == "..":
-            self._PathDirectorio.pop(len(self._PathDirectorio-1))
-            self._InodoDelDirectorioActual = self._PathDirectorio[len(
-                self._PathDirectorio-1)].keys()
-            self._NombreDelDirectorioActual = self._PathDirectorio[len(
-                self._PathDirectorio-1)].values()
+            self._PathDirectorios.pop(len(self._PathDirectorios)-1)
+            self._InodoDelDirectorioActual = list(self._PathDirectorios[len(
+                self._PathDirectorios)-1].keys())[0]
+            self._NombreDelDirectorioActual = list(self._PathDirectorios[len(
+                self._PathDirectorios)-1].values())[0]
             try:
-                self._InodoDelDirectorioPapa = self._PathDirectorio[len(
-                    self._PathDirectorio-2)].keys()
+                self._InodoDelDirectorioPapa = list(self._PathDirectorios[len(
+                    self._PathDirectorios)-2].keys())[0]
             except:
                 self._InodoDelDirectorioPapa = 0
         else:
             for directorio in self._Directorio:
                 if directorio._NombreDir == nombre_del_directorio:
-                    self._InodoDelDirectorioPapa = self._PathDirectorio[len(
-                        self._PathDirectorio-1)].keys()
-                    self._PathDirectorio.append(
+                    self._InodoDelDirectorioPapa = list(self._PathDirectorios[len(
+                        self._PathDirectorios)-1].keys())[0]
+                    self._PathDirectorios.append(
                         {directorio._InodoDir: directorio._NombreDir})
                     self._NombreDelDirectorioActual = nombre_del_directorio
                     self._InodoDelDirectorioActual = directorio._InodoDir
@@ -296,3 +292,22 @@ class Usuario:
             else:
                 numDirectorio += 1
         return numDirectorio
+
+
+# Pruebas
+"""
+usr = Usuario("Jorge", "cisco")
+usr.crearDirectorio("DirectorioPrueba")
+print("Inodo [0]: ", usr._Inodo[0])
+print("Inodo [1]: ", usr._Inodo[1])
+print("Inodo Dir Actual antes: ", usr._InodoDelDirectorioActual)
+print("Inodo Dir Papa antes: ", usr._InodoDelDirectorioPapa)
+usr.actualizar_dir_actual_cada_CD("DirectorioPrueba")
+print("\nInodo Dir Actual despues: ", usr._InodoDelDirectorioActual)
+print("Inodo Dir Papa despues: ", usr._InodoDelDirectorioPapa)
+
+usr.crearDirectorio("PokeDir")
+usr.actualizar_dir_actual_cada_CD("PokeDir")
+print("\nInodo Dir Actual final: ", usr._InodoDelDirectorioActual)
+print("Inodo Dir Papa final: ", usr._InodoDelDirectorioPapa)
+"""
