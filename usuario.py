@@ -21,7 +21,7 @@ class Usuario:
         self.myInit()
 
     def myInit(self):
-        self._PathDirectorios.append({0: self._Nombre})
+        self._PathDirectorios.append({0: "Jorge"})
         for i in range(lists_Size):
             self._LIL.append(i)
             self._LBL.append(i)
@@ -29,7 +29,7 @@ class Usuario:
             self._Directorio.append(Directorio())
         # Creación directorio "root"/"Nombre_Usuario"
         # Esta parte es MUY PROBABLE QUE DEBA SER CAMBIADA POR EXTRAER LA INFO DE MEMORIA
-        self.crearArchivo(self._Nombre)
+        self.crearDirectorio(self._Nombre)
 
     def crearArchivo(self, nombre_del_archivo):
         """ LISTO
@@ -41,7 +41,6 @@ class Usuario:
         """
         # Extremos el primer Inodo libre de LIL
         inodo_del_nuevo_archivo = self._LIL.pop(0)
-        print(self._LIL[0])
 
         # Asignamos los nuevos valores al inodo extraido
         self._Inodo[inodo_del_nuevo_archivo]._Nombre = nombre_del_archivo
@@ -109,7 +108,7 @@ class Usuario:
         self.liberarInodo(inodo_del_archivo)
 
     def editFile(self, nombre_del_archivo):
-        """ Algoritmo:
+        """ Algoritmo: LISTO
         *el usuario corre edit <nombre>
         *Buscar el inodo de ese archivo
         *Actualizamos archivo
@@ -118,7 +117,7 @@ class Usuario:
         self.actualizarArchivo(inodoDelArchivo)
 
     def buscarInodoPorNombreArchivo(self, nombre_del_archivo):
-        """ Algoritmo:
+        """ Algoritmo: LISTO
         *Recorrer lista _Inodo hasta que el nombre de uno de ellos coincidia con el ingresado
         *devolver numero de inodo
         """
@@ -128,18 +127,11 @@ class Usuario:
                 break
             else:
                 num_inodo += 1
-        if nombre_del_archivo == "dirA":
-            num_inodo = 99
-        elif nombre_del_archivo == "dirB":
-            num_inodo = 98
-        elif nombre_del_archivo == "fileC":
-            num_inodo = 97
-        elif nombre_del_archivo == "fileD":
-            num_inodo = 96
         return num_inodo
 
     def actualizar_dir_actual_cada_CD(self, nombre_del_directorio):
-        """ Algoritmo: ES PARA ACTUALIZAR EL ATRIBUTO _InodoDelDirectorioActual CADA VEZ QUE SE HAGA CD
+        """ Algoritmo: LISTO
+        ES PARA ACTUALIZAR EL ATRIBUTO _InodoDelDirectorioActual CADA VEZ QUE SE HAGA CD
         *Si el nombre del archivo es .. eliminamos el directorio del diccionario y a inodo actual asignamos los valores del diccionario
         *Si el nombre del archivo es diferente de .. Recorrer lista _Directorio hasta que el nombre de uno de ellos coincidia con el ingresado
         """
@@ -163,22 +155,26 @@ class Usuario:
                         {directorio._InodoDir: directorio._NombreDir})
                     self._NombreDelDirectorioActual = nombre_del_directorio
                     self._InodoDelDirectorioActual = directorio._InodoDir
-
                     break
 
     def actualizarArchivo(self, inodo_del_archivo):
-        """ Algoritmo:
+        """ Algoritmo: LISTO
         *Es llamado por otras funciones
         *Modificamos la fecha de modificacion del inodo correspondiete
         *Modificamos el tamaño del inodo correspondiente
     """
-        now = datetime.now()
-        d1 = now.strftime("%d/%m/%Y %H:%M:%S")
+        d1 = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         self._Inodo[inodo_del_archivo]._Fecha_ult_modificacion = d1
-        # self._Inodo[inodo_del_archivo]._Tamanio = os.path.getsize(os.path.abspath(self._NombreDelDirectorioActual+"/"+self._Inodo[inodo_del_archivo]._Nombre+".txt"))
+        relative_path = ""
+        for element in self._PathDirectorios:
+            relative_path += list(element.values())[0] + "/"
+        path_for_size = './files/' + relative_path + \
+            self._Inodo[inodo_del_archivo]._Nombre + ".txt"
+        self._Inodo[inodo_del_archivo]._Tamanio = os.stat(
+            path_for_size).st_size
 
     def crearDirectorio(self, nombre_del_directorio):
-        """
+        """ Algoritmo: LISTO
         # El usuarios ingresa createdir <nombre_del_directorio>
         # Se busca un directorio libre dentro del arreglo de directorios del usuario
         # Obtener un inodo de la LIL este sera inodo_del_nuevo_directorio
@@ -191,6 +187,7 @@ class Usuario:
         for directorioLibre in self._Directorio:
             if directorioLibre._Libre == True:
                 inodo_del_nuevo_directorio = self._LIL.pop(0)
+
                 self._Directorio[numDir]._InodoDir = inodo_del_nuevo_directorio
                 self._Directorio[numDir]._NombreDir = nombre_del_directorio
                 self._Directorio[numDir]._Libre = False
@@ -298,16 +295,10 @@ class Usuario:
 """
 usr = Usuario("Jorge", "cisco")
 usr.crearDirectorio("DirectorioPrueba")
-print("Inodo [0]: ", usr._Inodo[0])
-print("Inodo [1]: ", usr._Inodo[1])
-print("Inodo Dir Actual antes: ", usr._InodoDelDirectorioActual)
-print("Inodo Dir Papa antes: ", usr._InodoDelDirectorioPapa)
 usr.actualizar_dir_actual_cada_CD("DirectorioPrueba")
-print("\nInodo Dir Actual despues: ", usr._InodoDelDirectorioActual)
-print("Inodo Dir Papa despues: ", usr._InodoDelDirectorioPapa)
+usr.crearArchivo("poke")
+print("Archivo creado: ", usr._Inodo[2])
 
-usr.crearDirectorio("PokeDir")
-usr.actualizar_dir_actual_cada_CD("PokeDir")
-print("\nInodo Dir Actual final: ", usr._InodoDelDirectorioActual)
-print("Inodo Dir Papa final: ", usr._InodoDelDirectorioPapa)
+usr.editFile("poke")
+print("Archivo creado: ", usr._Inodo[2])
 """

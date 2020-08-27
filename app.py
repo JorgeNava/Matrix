@@ -56,8 +56,9 @@ def terminal():
                 "/" + nombre_del_archivo
             file_handler = open(path_del_archivo, 'w')
             file_handler.close()
+            # actualUser.borrarArchivo(comando_seccionado[1])
             # Registramos el archivo en la estructura
-            actualUser.crearArchivo(nombre_del_archivo)
+            actualUser.crearArchivo(comando_seccionado[1])
         elif comando_seccionado[0] == "cd":
             # LISTO
             nombre_del_directorio = comando_seccionado[1]
@@ -85,54 +86,21 @@ def terminal():
             os.mkdir(path_del_directorio)
             actualUser.crearDirectorio(nombre_del_directorio)
         elif(comando_seccionado[0] == "edit"):
-            nombre_del_archivo = pathDirectorioActual + \
-                "/" + comando_seccionado[1] + ".txt"
-            file_handler = open(nombre_del_archivo, 'a')
+            # LISTO
+            nombre_del_archivo = comando_seccionado[1] + ".txt"
+            path_del_archivo = pathDirectorioActual + \
+                "/" + nombre_del_archivo
+            file_handler = open(path_del_archivo, 'a')
             file_handler.write(comando_seccionado[2]+"\n")
             file_handler.close()
-            nombre_del_archivo_a_editar = comando_seccionado[1] + ".txt"
-            '''FALTO ARREGLAR LO DEL TAMAÑO del achivo
-            for i in range(3):
-                print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ \
-                      actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ \
-                      actualUser._Inodo[i]._Fecha_ult_modificacion)
-                print("Libre: "+ str(actualUser._Inodo[i]._Libre))'''
-            actualUser.editFile(nombre_del_archivo_a_editar)
-            '''for i in range(3):
-                print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ \
-                      actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ \
-                      actualUser._Inodo[i]._Fecha_ult_modificacion)
-                print("Libre: "+ str(actualUser._Inodo[i]._Libre))'''
+            actualUser.editFile(comando_seccionado[1])
         elif(comando_seccionado[0] == "delete"):
-            nombre_del_archivo = pathDirectorioActual + "/" + \
-                comando_seccionado[1] + ".txt"
-            os.remove(nombre_del_archivo)
-            nombre_del_archivo_a_borrar = comando_seccionado[1] + ".txt"
-            '''PROBLEMA SOLO FUNCIONA BIEN LA PRIMERA VEZ
-            for i in range(3):
-                print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ \
-                      actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ \
-                      actualUser._Inodo[i]._Fecha_ult_modificacion)
-                print("Libre: "+ str(actualUser._Inodo[i]._Libre))
-                print(actualUser._Directorio[0]._Nombre)
-                print(actualUser._Directorio[0]._Inodos)
-            actualUser.borrarArchivo(nombre_del_archivo_a_borrar)
-            print("----------------------------------------------------------------")
-            for i in range(3):
-                print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ \
-                      actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ \
-                      actualUser._Inodo[i]._Fecha_ult_modificacion)
-                print("Libre: "+ str(actualUser._Inodo[i]._Libre))
-                print(actualUser._Directorio[0]._Nombre)
-                print(actualUser._Directorio[0]._Inodos)'''
+            # TRABAJANDO
+            nombre_del_archivo = comando_seccionado[1] + ".txt"
+            path_del_archivo = pathDirectorioActual + \
+                "/" + nombre_del_archivo
+            os.remove(path_del_archivo)
+            # PROBLEMA SOLO FUNCIONA BIEN LA PRIMERA VEZ
         elif(comando_seccionado[0] == "deletedir"):
             nombre_del_archivo = pathDirectorioActual + \
                 "/" + comando_seccionado[1]
