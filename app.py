@@ -12,7 +12,7 @@ app.secret_key = "secreto"
 users = [Usuario("admin", "cisco"), Usuario(
     "Gustavo", "cisco"), Usuario("Jorge", "cisco")]
 
-global pathDirectorioActual
+pathDirectorioActual = None
 
 # Recipiente del usuario actual, sera asignado despues de hacer login
 actualUser = Usuario("", "")
@@ -50,16 +50,19 @@ def terminal():
     if (comando_recibido is not None):
         comando_seccionado = comando_recibido.split("-")
         if(comando_seccionado[0] == "createf"):
-            nombre_del_archivo = pathDirectorioActual+"/" + comando_seccionado[1] + ".txt"
+            nombre_del_archivo = pathDirectorioActual + \
+                "/" + comando_seccionado[1] + ".txt"
             file_handler = open(nombre_del_archivo, 'w')
             file_handler.close()
-            #Registramos el archivo en la estructura
+            # Registramos el archivo en la estructura
             nombre_del_archivo_a_registrar = comando_seccionado[1] + ".txt"
             actualUser.crearArchivo(nombre_del_archivo_a_registrar)
             '''for i in range(1):
                 print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)
+                print("Fecha de creación: "+ \
+                      actualUser._Inodo[i]._Fecha_de_creacion)
+                print("Fecha de ult modificación: "+ \
+                      actualUser._Inodo[i]._Fecha_ult_modificacion)
                 print("Libre: "+ str(actualUser._Inodo[i]._Libre))
                 print(actualUser._Directorio[0]._Nombre)
                 print(actualUser._Directorio[0]._Inodos)'''
@@ -79,24 +82,31 @@ def terminal():
                 pathDirectorioActual += "/"+comando_seccionado[1]
             '''
             PENDIENTE
-            print("Inodo del directorio actual: "+actualUser._InodoDelDirectorioActual)  
+            print("Inodo del directorio actual: "+ \
+                  actualUser._InodoDelDirectorioActual)
             actualUser.actualizar_dir_actual_cada_CD(comando_seccionado[1])
             print("Inodo del directorio actual: "+actualUser._InodoDelDirectorioActual)'''
         elif(comando_seccionado[0] == "createdir"):
-            nombre_del_directorio = pathDirectorioActual + "/" + comando_seccionado[1]
+            nombre_del_directorio = pathDirectorioActual + \
+                "/" + comando_seccionado[1]
             os.mkdir(nombre_del_directorio)
             nombre_del_directorio_a_registrar = comando_seccionado[1]
             actualUser.crearDirectorio(nombre_del_directorio_a_registrar)
             '''for i in range(5):
                 print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)
+                print("Fecha de creación: "+ \
+                      actualUser._Inodo[i]._Fecha_de_creacion)
+                print("Fecha de ult modificación: "+ \
+                      actualUser._Inodo[i]._Fecha_ult_modificacion)
                 print("Libre: "+ str(actualUser._Inodo[i]._Libre))
-                print("Nombre directorio: "+ actualUser._Directorio[i]._NombreDir)
-                print("inodo directorio: "+ str(actualUser._Directorio[i]._InodoDir))
+                print("Nombre directorio: "+ \
+                      actualUser._Directorio[i]._NombreDir)
+                print("inodo directorio: "+ \
+                      str(actualUser._Directorio[i]._InodoDir))
                 CHECAR SI LA LIL DEBE EMPEZAR EN 0 O 1'''
         elif(comando_seccionado[0] == "edit"):
-            nombre_del_archivo = pathDirectorioActual + "/" + comando_seccionado[1] + ".txt"
+            nombre_del_archivo = pathDirectorioActual + \
+                "/" + comando_seccionado[1] + ".txt"
             file_handler = open(nombre_del_archivo, 'a')
             file_handler.write(comando_seccionado[2]+"\n")
             file_handler.close()
@@ -104,14 +114,18 @@ def terminal():
             '''FALTO ARREGLAR LO DEL TAMAÑO del achivo
             for i in range(3):
                 print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)
+                print("Fecha de creación: "+ \
+                      actualUser._Inodo[i]._Fecha_de_creacion)
+                print("Fecha de ult modificación: "+ \
+                      actualUser._Inodo[i]._Fecha_ult_modificacion)
                 print("Libre: "+ str(actualUser._Inodo[i]._Libre))'''
             actualUser.editFile(nombre_del_archivo_a_editar)
             '''for i in range(3):
                 print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)
+                print("Fecha de creación: "+ \
+                      actualUser._Inodo[i]._Fecha_de_creacion)
+                print("Fecha de ult modificación: "+ \
+                      actualUser._Inodo[i]._Fecha_ult_modificacion)
                 print("Libre: "+ str(actualUser._Inodo[i]._Libre))'''
         elif(comando_seccionado[0] == "delete"):
             nombre_del_archivo = pathDirectorioActual + "/" + \
@@ -121,8 +135,10 @@ def terminal():
             '''PROBLEMA SOLO FUNCIONA BIEN LA PRIMERA VEZ
             for i in range(3):
                 print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)
+                print("Fecha de creación: "+ \
+                      actualUser._Inodo[i]._Fecha_de_creacion)
+                print("Fecha de ult modificación: "+ \
+                      actualUser._Inodo[i]._Fecha_ult_modificacion)
                 print("Libre: "+ str(actualUser._Inodo[i]._Libre))
                 print(actualUser._Directorio[0]._Nombre)
                 print(actualUser._Directorio[0]._Inodos)
@@ -130,64 +146,85 @@ def terminal():
             print("----------------------------------------------------------------")
             for i in range(3):
                 print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)
+                print("Fecha de creación: "+ \
+                      actualUser._Inodo[i]._Fecha_de_creacion)
+                print("Fecha de ult modificación: "+ \
+                      actualUser._Inodo[i]._Fecha_ult_modificacion)
                 print("Libre: "+ str(actualUser._Inodo[i]._Libre))
                 print(actualUser._Directorio[0]._Nombre)
                 print(actualUser._Directorio[0]._Inodos)'''
         elif(comando_seccionado[0] == "deletedir"):
-            nombre_del_archivo = pathDirectorioActual+"/" + comando_seccionado[1]
+            nombre_del_archivo = pathDirectorioActual + \
+                "/" + comando_seccionado[1]
             os.rmdir(nombre_del_archivo)
             nombre_del_directorio_a_borrar = comando_seccionado[1]
             ''' CHECAR BIEN FUNCION DE BORRAR DIRECTORIO EN USUARIO.PY YA QUE SOLO FUNCIONA 1 VEZ
             for i in range(3):
                 print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)
+                print("Fecha de creación: "+ \
+                      actualUser._Inodo[i]._Fecha_de_creacion)
+                print("Fecha de ult modificación: "+ \
+                      actualUser._Inodo[i]._Fecha_ult_modificacion)
                 print("Libre: "+ str(actualUser._Inodo[i]._Libre))
-                print("Nombre directorio "+str(i)+":"+ actualUser._Directorio[i]._NombreDir)
-                print("inodo directorio "+str(i)+":"+ str(actualUser._Directorio[i]._InodoDir))
+                print("Nombre directorio "+str(i)+":"+ \
+                      actualUser._Directorio[i]._NombreDir)
+                print("inodo directorio "+str(i)+":"+ \
+                      str(actualUser._Directorio[i]._InodoDir))
                 print(actualUser._Directorio[i]._Nombre)
                 print(actualUser._Directorio[i]._Inodos)'''
             actualUser.borrarDirectorio(nombre_del_directorio_a_borrar)
             print("----------------------------------------------------------------")
             '''for i in range(3):
                 print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)
+                print("Fecha de creación: "+ \
+                      actualUser._Inodo[i]._Fecha_de_creacion)
+                print("Fecha de ult modificación: "+ \
+                      actualUser._Inodo[i]._Fecha_ult_modificacion)
                 print("Libre: "+ str(actualUser._Inodo[i]._Libre))
-                print("Nombre directorio "+str(i)+":"+ actualUser._Directorio[i]._NombreDir)
-                print("inodo directorio "+str(i)+":"+ str(actualUser._Directorio[i]._InodoDir))
+                print("Nombre directorio "+str(i)+":"+ \
+                      actualUser._Directorio[i]._NombreDir)
+                print("inodo directorio "+str(i)+":"+ \
+                      str(actualUser._Directorio[i]._InodoDir))
                 print(actualUser._Directorio[i]._Nombre)
-                print(actualUser._Directorio[i]._Inodos)    '''   
+                print(actualUser._Directorio[i]._Inodos)    '''
         elif(comando_seccionado[0] == "rename"):
-            nombre_del_archivo_viejo = pathDirectorioActual+"/" + comando_seccionado[1] + ".txt"
-            nombre_del_archivo_nuevo = pathDirectorioActual+"/" + comando_seccionado[2] + ".txt"
+            nombre_del_archivo_viejo = pathDirectorioActual + \
+                "/" + comando_seccionado[1] + ".txt"
+            nombre_del_archivo_nuevo = pathDirectorioActual + \
+                "/" + comando_seccionado[2] + ".txt"
             os.rename(nombre_del_archivo_viejo, nombre_del_archivo_nuevo)
-            nombre_del_archivo_viejo_a_registrar= comando_seccionado[1] + ".txt"
-            nombre_del_archivo_nuevo_a_registrar=comando_seccionado[2] + ".txt"
-            actualUser.renameFile(nombre_del_archivo_viejo_a_registrar, nombre_del_archivo_nuevo_a_registrar)
+            nombre_del_archivo_viejo_a_registrar = comando_seccionado[1] + ".txt"
+            nombre_del_archivo_nuevo_a_registrar = comando_seccionado[2] + ".txt"
+            actualUser.renameFile(
+                nombre_del_archivo_viejo_a_registrar, nombre_del_archivo_nuevo_a_registrar)
             '''for i in range(3):
                 print("Nombre archivo nuevo: "+ actualUser._Inodo[i]._Nombre)
                 print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)'''
         elif(comando_seccionado[0] == "renamedir"):
-            nombre_del_archivo_viejo = pathDirectorioActual+"/" + comando_seccionado[1]
-            nombre_del_archivo_nuevo = pathDirectorioActual+"/" + comando_seccionado[2]
+            nombre_del_archivo_viejo = pathDirectorioActual + \
+                "/" + comando_seccionado[1]
+            nombre_del_archivo_nuevo = pathDirectorioActual + \
+                "/" + comando_seccionado[2]
             os.rename(nombre_del_archivo_viejo, nombre_del_archivo_nuevo)
 
-            nombre_del_directorio_viejo_a_registrar= comando_seccionado[1] + ".txt"
-            nombre_del_directorio_nuevo_a_registrar=comando_seccionado[2] + ".txt"
-            actualUser.renombrarDirectorio(nombre_del_directorio_viejo_a_registrar, nombre_del_directorio_nuevo_a_registrar)
+            nombre_del_directorio_viejo_a_registrar = comando_seccionado[1] + ".txt"
+            nombre_del_directorio_nuevo_a_registrar = comando_seccionado[2] + ".txt"
+            actualUser.renombrarDirectorio(
+                nombre_del_directorio_viejo_a_registrar, nombre_del_directorio_nuevo_a_registrar)
             '''for i in range(3):
-                print("Nuevo Nombre directorio: "+ actualUser._Directorio[0]._NombreDir)
+                print("Nuevo Nombre directorio: "+ \
+                      actualUser._Directorio[0]._NombreDir)
                 print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)'''
         elif(comando_seccionado[0] == "copy"):
-            nombre_del_archivo_original = pathDirectorioActual+"/" + comando_seccionado[1] + ".txt"
-            nombre_del_archivo = pathDirectorioActual+"/" + comando_seccionado[1] + "(copy("+str(copias)+")).txt"
+            nombre_del_archivo_original = pathDirectorioActual + \
+                "/" + comando_seccionado[1] + ".txt"
+            nombre_del_archivo = pathDirectorioActual+"/" + \
+                comando_seccionado[1] + "(copy("+str(copias)+")).txt"
             while True:
                 if os.path.exists(nombre_del_archivo):
                     copias += 1
-                    nombre_del_archivo = pathDirectorioActual+"/" + comando_seccionado[1] + "(copy("+str(copias)+")).txt"
+                    nombre_del_archivo = pathDirectorioActual+"/" + \
+                        comando_seccionado[1] + "(copy("+str(copias)+")).txt"
                 else:
                     break
             file_handler_original = open(nombre_del_archivo_original, 'r')
@@ -220,28 +257,31 @@ def dataManager():
         elif (data.get("comando") == "list"):
             direccion = pathDirectorioActual+"/"
             dir_content = dict()
-            count = 0
+
+            inodo_de_archivo = 404
+
             for dir_files in ls1(direccion):
-                dir_content[count] = dir_content.get(count, dir_files)
-                count += 1
+                # buscamos el inodo del archivo en base a su nombre
+                if dir_files == ".":
+                    inodo_de_archivo = actualUser._InodoDelDirectorioActual
+                elif dir_files == "..":
+                    inodo_de_archivo = actualUser._InodoDelDirectorioPapa
+                else:
+                    inodo_de_archivo = actualUser.buscarInodoPorNombreArchivo(
+                        dir_files.rsplit(".")[0])
+                dir_content[inodo_de_archivo] = dir_content.get(
+                    inodo_de_archivo, dir_files)
+            print(dir_content)
             return dir_content
 
 
 def ls1(path):
-    return [obj for obj in listdir(path) if isfile(path + obj)]
-
-
-"""
-VAMOS A GUARDAR TODA LA INFORMACIÓN DEL USUARIO ACTUAL DENTRO DE SU ARCHIVO MEMORIA
-def guardarPartida(actualUser):´
-*Abrimos el archivo memoria del usuario
-*Escribismos toda la informacion de la estructura del usuario en su archivo de memoria 
-
-VAMOS A INICIALIZAR TODA LA INFORMACIÓN DEL ARCHIVO MEMORIA DEL USUARIO DENTRO DE SUS ESTRCUTURAS
-def cargarPartida(actualUser):
-* Buscar el archivo del usuario
-* Extraer todo del archivo memoria a la estructura del usuario
-"""
+    # return [obj for obj in listdir(path) if isfile(path + obj)]
+    contenido_de_dir = [".", ".."]
+    with os.scandir(path) as archivos:
+        for archivo in archivos:
+            contenido_de_dir.append(archivo.name)
+    return contenido_de_dir
 
 
 app.run(debug=True, port=80)

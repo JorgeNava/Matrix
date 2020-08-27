@@ -7,14 +7,13 @@ class Directorio:
 
     def __init__(self):
         self._Libre = True
-        #for i in range(10: # cada directorio tendra 10 archivos maximo
-        self._Inodos.append(-1)
-        self._Nombre.append("")
+        # cada directorio tendra 10 archivos maximo
+        for i in range(10):
+            self._Inodos.append(-1)
+            self._Nombre.append("")
 
-    def __str__(self):
-        return "{} {} {}".format(self._Inodos, self._Nombre, self._Libre)
 
-#    def crearDirectorio(self, nombre_del_directorio, inodo_del_directorio):
+# def crearDirectorio(self, nombre_del_directorio, inodo_del_directorio):
         # El usuarios ingresa createdir <nombre_del_directorio>
         # Se busca un directorio libre dentro del arreglo de directorios del usuario "esta parte va en usuario"
         # inodo_del_directorio es obtenido desde el obj usuario y se le agega al inodod de este directorio
