@@ -73,6 +73,12 @@ function inputCommandTerminal() {
             case "cd":
                 moverse(comandoSeccionado[1])
                 break
+            case "actual":
+                path_actual()
+                break
+            case "open":
+                open_file(comandoSeccionado[1], comandoSeccionado[2])
+                break
             default:
                 matrixTerminal.print('"' + comando + '" no es un comando reconocido...')
                 break;
@@ -94,21 +100,18 @@ function moverse(nombre_del_archivo) {
 //Creara un archivo
 function createf(nombre_del_archivo) {
     matrixTerminal.print("creating " + nombre_del_archivo + "...")
-    //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
     parametros_a_enviar = "comando_a_enviar=createf-" + nombre_del_archivo;
     send_request_to_python(parametros_a_enviar);
 }
 //Creara un directorio
 function crearDirectorio(nombre_del_archivo) {
     matrixTerminal.print("creating " + nombre_del_archivo + "...")
-    //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
     parametros_a_enviar = "comando_a_enviar=createdir-" + nombre_del_archivo;
     send_request_to_python(parametros_a_enviar);
 }
 //Copiara un archivo
 function copyFile(nombre_del_archivo) {
     matrixTerminal.print("copying " + nombre_del_archivo + "...")
-    //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
     parametros_a_enviar = "comando_a_enviar=copy-" + nombre_del_archivo;
     send_request_to_python(parametros_a_enviar);
 }
@@ -116,7 +119,6 @@ function copyFile(nombre_del_archivo) {
 //Renombrara un archivo
 function renameFile(nombre_del_archivo_viejo, nombre_del_archivo_nuevo) {
     matrixTerminal.print("renaming file " + nombre_del_archivo_viejo + " to " + nombre_del_archivo_nuevo)
-    //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
     parametros_a_enviar = "comando_a_enviar=rename-" + nombre_del_archivo_viejo + "-" + nombre_del_archivo_nuevo;
     send_request_to_python(parametros_a_enviar);
 }
@@ -124,7 +126,6 @@ function renameFile(nombre_del_archivo_viejo, nombre_del_archivo_nuevo) {
 //Renombrara un directorio
 function renameDir(nombre_del_archivo_viejo, nombre_del_archivo_nuevo) {
     matrixTerminal.print("renaming directory " + nombre_del_archivo_viejo + " to " + nombre_del_archivo_nuevo)
-    //parametros_a_enviar = "comando=createf&nombreArchivo=" + nombre_del_archivo;
     parametros_a_enviar = "comando_a_enviar=renamedir-" + nombre_del_archivo_viejo + "-" + nombre_del_archivo_nuevo;
     send_request_to_python(parametros_a_enviar);
 }
@@ -132,7 +133,6 @@ function renameDir(nombre_del_archivo_viejo, nombre_del_archivo_nuevo) {
 //Abrira y escribira el contenido de un archivo
 function edit(nombre_del_archivo, texto_a_agregar) {
     matrixTerminal.print("openning " + nombre_del_archivo + " for edition...")
-    //matrixTerminal.input("Input the new text: ", function (texto_a_agregar) {
     parametros_a_enviar = "comando_a_enviar=edit-" + nombre_del_archivo + "-" + texto_a_agregar;
     send_request_to_python(parametros_a_enviar);
 }
@@ -154,6 +154,54 @@ function deleteDir(nombre_del_archivo) {
     matrixTerminal.print("deleting directory " + nombre_del_archivo)
     parametros_a_enviar = "comando_a_enviar=deletedir-" + nombre_del_archivo;
     send_request_to_python(parametros_a_enviar);
+}
+
+function path_actual() {
+
+    let info_to_send = {
+        "comando": "actual"
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/dataManager",
+        contentType: "application/json;charser=utf-8",
+        data: JSON.stringify(info_to_send),
+        dataType: "JSON",
+        success: function (contenido_archivo) {
+            console.log(contenido_archivo)
+
+            let countKey = Object.keys(contenido_archivo).length, i;
+            for (i = 0; i < countKey; i++) {
+                matrixTerminal.print(contenido_archivo[i])
+            }
+        }
+    });
+}
+
+function open_file(nombre_del_archivo, nombre_copia) {
+    if (typeof nombre_copia !== 'undefined') {
+        nombre_del_archivo = nombre_del_archivo + " " + nombre_copia;
+    } else {
+        nombre_del_archivo = nombre_del_archivo;
+
+    }
+
+    let info_to_send = {
+        "comando": "open",
+        "nombre": nombre_del_archivo
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/dataManager",
+        contentType: "application/json;charser=utf-8",
+        data: JSON.stringify(info_to_send),
+        dataType: "JSON",
+        success: function (contenido_archivo) {
+            console.log("Archivo Abierto")
+        }
+    });
 }
 
 function readFile(nombre_del_archivo) {
@@ -231,7 +279,7 @@ function clearTerminal() {
 
 //Inicializacion de terminal
 function defineTerminal() {
-    matrixTerminal.setHeight("200px")
+    matrixTerminal.setHeight("500px")
     matrixTerminal.setWidth('1200px')
     matrixTerminal.setTextColor("#00FF41")
 }

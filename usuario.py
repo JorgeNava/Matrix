@@ -237,11 +237,16 @@ class Usuario:
             nombre_del_directorio)
         for directorio in self._Directorio:
             if directorio._InodoDir == inodo_del_directorio:
+                for nombreArchivo in self._Directorio[numDir]._Nombre:
+                    self.borrarArchivo(nombreArchivo)
                 self._Directorio[numDir]._InodoDir = -1
                 self._Directorio[numDir]._NombreDir = ""
                 self._Directorio[numDir]._Libre = True
                 self._Directorio[numDir]._Inodos.clear()
                 self._Directorio[numDir]._Nombre.clear()
+                for i in range(10):
+                    self._Directorio[numDir]._Inodos.append(-1)
+                    self._Directorio[numDir]._Nombre.append("")
                 break
             else:
                 numDir += 1

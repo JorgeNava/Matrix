@@ -2,6 +2,7 @@ from flask import Flask, render_template, session, request, jsonify
 import os
 from usuario import Usuario
 import json
+import shutil
 from os import listdir
 from os.path import isfile, isdir
 
@@ -105,10 +106,11 @@ def terminal():
             actualUser.borrarArchivo(comando_seccionado[1])
         elif(comando_seccionado[0] == "deletedir"):
             # GUSTAVO - TRABAJANDO
-            nombre_del_archivo = pathDirectorioActual + \
-                "/" + comando_seccionado[1]
-            os.rmdir(nombre_del_archivo)
-            nombre_del_directorio_a_borrar = comando_seccionado[1]
+            nombre_del_directorio = comando_seccionado[1]
+            path_del_directorio = pathDirectorioActual + \
+                "/" + nombre_del_directorio
+            shutil.rmtree(path_del_directorio)
+            actualUser.borrarDirectorio(nombre_del_directorio)
         elif(comando_seccionado[0] == "rename"):
             # LISTO
             nombre_del_archivo_viejo = comando_seccionado[1] + ".txt"
@@ -133,12 +135,12 @@ def terminal():
             path_del_archivo_original = pathDirectorioActual + \
                 "/" + comando_seccionado[1] + ".txt"
             path_copia = pathDirectorioActual+"/" + \
-                comando_seccionado[1] + " copy("+str(copias)+").txt"
+                comando_seccionado[1] + "(copy("+str(copias)+")).txt"
             while True:
                 if os.path.exists(path_copia):
                     copias += 1
                     path_copia = pathDirectorioActual+"/" + \
-                        comando_seccionado[1] + " copy("+str(copias)+").txt"
+                        comando_seccionado[1] + "(copy("+str(copias)+")).txt"
                 else:
                     break
             file_handler_original = open(path_del_archivo_original, 'r')
@@ -146,7 +148,7 @@ def terminal():
             file_handler.write(file_handler_original.read())
             file_handler.close()
             file_handler_original.close()
-            path_copia = comando_seccionado[1] + " copy("+str(copias) + ")"
+            path_copia = comando_seccionado[1] + "(copy("+str(copias) + "))"
             actualUser.crearArchivo(path_copia)
     else:
         print("Comando is None")
@@ -188,6 +190,15 @@ def dataManager():
                 dir_content[inodo_de_archivo] = dir_content.get(
                     inodo_de_archivo, dir_files)
             return dir_content
+        elif(data.get("comando") == "actual"):
+            current_path = {0: pathDirectorioActual}
+            return current_path
+        elif(data.get("comando") == "open"):
+            openPath = pathDirectorioActual.replace("/", "\\")
+            openPath += "\\"+data.get("nombre") + ".txt"
+            os.startfile(openPath)
+            current_path = {0: pathDirectorioActual}
+            return current_path
 
 
 def ls1(path):
