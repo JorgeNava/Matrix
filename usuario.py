@@ -21,7 +21,6 @@ class Usuario:
         self.myInit()
 
     def myInit(self):
-        self._PathDirectorios.append({0: "Jorge"})
         for i in range(lists_Size):
             self._LIL.append(i)
             self._LBL.append(i)
@@ -66,7 +65,7 @@ class Usuario:
         self._Directorio[indice_del_directorio_actual]._Libre = False
 
     def renameFile(self, nombre_del_archivo, nuevo_nombre_del_archivo):
-        """ Algoritmo:
+        """ Algoritmo: LISTO
             *el usuario corre rename <nombre>
             *Buscar el inodo de ese archivo
             *Cambiamos el nombre del inodo correspondiente al nuevo nombre
@@ -76,13 +75,13 @@ class Usuario:
         inodo_del_archivo = self.buscarInodoPorNombreArchivo(
             nombre_del_archivo)
         self._Inodo[inodo_del_archivo]._Nombre = nuevo_nombre_del_archivo
-        self.actualizarNombresDeArchivosEnDirectorios()
         self.actualizarArchivo(inodo_del_archivo)
+        self.actualizarNombresDeArchivosEnDirectorios()
         # LLAMAR A FUNCION ACTUALIZAR DIRECTORIO
         # actualizarArchivo
 
     def borrarArchivo(self, nombre_del_archivo):
-        """ Algoritmo:
+        """ Algoritmo: LISTO
         *Buscamos el inodo del archivo que se desea borrar
         *Borramos la información de este archivo del directorio en el que se encuentre (dir_actual)
         *Borramos la información del inodo que poseia
@@ -90,17 +89,17 @@ class Usuario:
         *Agregar inodo liberado a LIL
     """
         numDirectorio = 0
-        numInodo = 0
+        index_del_arhivo = 0
         inodo_del_archivo = self.buscarInodoPorNombreArchivo(
             nombre_del_archivo)
         for directorio in self._Directorio:
             if directorio._InodoDir == self._InodoDelDirectorioActual:
                 for inodoArchivo in directorio._Inodos:
-                    if inodoArchivo == numInodo:
-                        self._Directorio[numDirectorio]._Inodos[numInodo] = -1
-                        self._Directorio[numDirectorio]._Nombre[numInodo] = ""
+                    if inodoArchivo == inodo_del_archivo:
+                        self._Directorio[numDirectorio]._Inodos[index_del_arhivo] = -1
+                        self._Directorio[numDirectorio]._Nombre[index_del_arhivo] = ""
                     else:
-                        numInodo += 1
+                        index_del_arhivo += 1
             else:
                 numDirectorio += 1
 
@@ -204,7 +203,8 @@ class Usuario:
                 numDir += 1
 
     def actualizarNombresDeArchivosEnDirectorios(self):
-        """ SE VA A UTILIZAR EN RENOMBRAR
+        """ Algoritmo: LISTO 
+        SE VA A UTILIZAR EN RENOMBRAR
         * Se introduce el inodo del directorio al cual queremos actualizar los nombres de sus archivos
         * Buscamos ese directorio dentro de nuestro lista de directorios _Directorio 
         * Buscamos los inodos de sus archivos dentro del arreglo _Inodos[]
@@ -222,7 +222,8 @@ class Usuario:
                     else:
                         break
                 break
-            numDir += 1
+            else:
+                numDir += 1
 
     def borrarDirectorio(self, nombre_del_directorio):
         """
@@ -247,7 +248,7 @@ class Usuario:
         self.liberarInodo(inodo_del_directorio)
 
     def renombrarDirectorio(self, nombre_del_directorio, nuevo_nombre_del_directorio):
-        """ Algoritmo:
+        """ Algoritmo: LISTO
         *el usuario corre renameDir <nombre>
         *Buscar el inodo del del directorio deseado
         *Cambiamos el nombre del directorio al nuevo nombre, para buscarlo usamos su inodo
@@ -280,6 +281,7 @@ class Usuario:
         self._Inodo[inodo_a_liberar]._Libre = True
         self._Inodo[inodo_a_liberar]._Permisos = ""
         self._LIL.append(inodo_a_liberar)
+        self._LIL.sort()
 
     def buscarIndiceDeDirectorioPorInodo(self, inodo_del_directorio):
         numDirectorio = 0
@@ -294,11 +296,13 @@ class Usuario:
 # Pruebas
 """
 usr = Usuario("Jorge", "cisco")
-usr.crearDirectorio("DirectorioPrueba")
-usr.actualizar_dir_actual_cada_CD("DirectorioPrueba")
-usr.crearArchivo("poke")
-print("Archivo creado: ", usr._Inodo[2])
+usr.crearDirectorio("dirA")
+usr.actualizar_dir_actual_cada_CD("dirA")
+usr.crearArchivo("fileB")
+print("Inodo[1]: ", usr._Inodo[1])
+print("Inodo[2]: ", usr._Inodo[2])
 
-usr.editFile("poke")
-print("Archivo creado: ", usr._Inodo[2])
+usr.renameFile("fileB", "fileZ")
+print("Inodo[1]: ", usr._Inodo[1])
+print("Inodo[2]: ", usr._Inodo[2])
 """

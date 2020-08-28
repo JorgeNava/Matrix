@@ -38,6 +38,7 @@ def login():
                 actualUser._Inodo = u._Inodo
                 actualUser._Directorio = u._Directorio
                 actualUser._InodoDelDirectorioActual = u._InodoDelDirectorioActual
+                actualUser._PathDirectorios.append({0: actualUser._Nombre})
         pathDirectorioActual = "./files/"+actualUser._Nombre
     return render_template("login.html")
 
@@ -56,8 +57,6 @@ def terminal():
                 "/" + nombre_del_archivo
             file_handler = open(path_del_archivo, 'w')
             file_handler.close()
-            # actualUser.borrarArchivo(comando_seccionado[1])
-            # Registramos el archivo en la estructura
             actualUser.crearArchivo(comando_seccionado[1])
         elif comando_seccionado[0] == "cd":
             # LISTO
@@ -95,104 +94,70 @@ def terminal():
             file_handler.close()
             actualUser.editFile(comando_seccionado[1])
         elif(comando_seccionado[0] == "delete"):
-            # TRABAJANDO
+            # LISTO
             nombre_del_archivo = comando_seccionado[1] + ".txt"
             path_del_archivo = pathDirectorioActual + \
                 "/" + nombre_del_archivo
             os.remove(path_del_archivo)
-            # PROBLEMA SOLO FUNCIONA BIEN LA PRIMERA VEZ
+            actualUser.borrarArchivo(comando_seccionado[1])
         elif(comando_seccionado[0] == "deletedir"):
+            # GUSTAVO - TRABAJANDO
             nombre_del_archivo = pathDirectorioActual + \
                 "/" + comando_seccionado[1]
             os.rmdir(nombre_del_archivo)
             nombre_del_directorio_a_borrar = comando_seccionado[1]
-            ''' CHECAR BIEN FUNCION DE BORRAR DIRECTORIO EN USUARIO.PY YA QUE SOLO FUNCIONA 1 VEZ
-            for i in range(3):
-                print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ \
-                      actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ \
-                      actualUser._Inodo[i]._Fecha_ult_modificacion)
-                print("Libre: "+ str(actualUser._Inodo[i]._Libre))
-                print("Nombre directorio "+str(i)+":"+ \
-                      actualUser._Directorio[i]._NombreDir)
-                print("inodo directorio "+str(i)+":"+ \
-                      str(actualUser._Directorio[i]._InodoDir))
-                print(actualUser._Directorio[i]._Nombre)
-                print(actualUser._Directorio[i]._Inodos)'''
-            actualUser.borrarDirectorio(nombre_del_directorio_a_borrar)
-            print("----------------------------------------------------------------")
-            '''for i in range(3):
-                print("Nombre archivo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de creación: "+ \
-                      actualUser._Inodo[i]._Fecha_de_creacion)
-                print("Fecha de ult modificación: "+ \
-                      actualUser._Inodo[i]._Fecha_ult_modificacion)
-                print("Libre: "+ str(actualUser._Inodo[i]._Libre))
-                print("Nombre directorio "+str(i)+":"+ \
-                      actualUser._Directorio[i]._NombreDir)
-                print("inodo directorio "+str(i)+":"+ \
-                      str(actualUser._Directorio[i]._InodoDir))
-                print(actualUser._Directorio[i]._Nombre)
-                print(actualUser._Directorio[i]._Inodos)    '''
         elif(comando_seccionado[0] == "rename"):
-            nombre_del_archivo_viejo = pathDirectorioActual + \
-                "/" + comando_seccionado[1] + ".txt"
-            nombre_del_archivo_nuevo = pathDirectorioActual + \
-                "/" + comando_seccionado[2] + ".txt"
-            os.rename(nombre_del_archivo_viejo, nombre_del_archivo_nuevo)
-            nombre_del_archivo_viejo_a_registrar = comando_seccionado[1] + ".txt"
-            nombre_del_archivo_nuevo_a_registrar = comando_seccionado[2] + ".txt"
-            actualUser.renameFile(
-                nombre_del_archivo_viejo_a_registrar, nombre_del_archivo_nuevo_a_registrar)
-            '''for i in range(3):
-                print("Nombre archivo nuevo: "+ actualUser._Inodo[i]._Nombre)
-                print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)'''
-        elif(comando_seccionado[0] == "renamedir"):
-            nombre_del_archivo_viejo = pathDirectorioActual + \
-                "/" + comando_seccionado[1]
-            nombre_del_archivo_nuevo = pathDirectorioActual + \
-                "/" + comando_seccionado[2]
-            os.rename(nombre_del_archivo_viejo, nombre_del_archivo_nuevo)
+            # LISTO
+            nombre_del_archivo_viejo = comando_seccionado[1] + ".txt"
+            nombre_del_archivo_nuevo = comando_seccionado[2] + ".txt"
+            path_del_archivo_viejo = pathDirectorioActual + "/" + nombre_del_archivo_viejo
+            path_del_archivo_nuevo = pathDirectorioActual + "/" + nombre_del_archivo_nuevo
 
-            nombre_del_directorio_viejo_a_registrar = comando_seccionado[1] + ".txt"
-            nombre_del_directorio_nuevo_a_registrar = comando_seccionado[2] + ".txt"
+            os.rename(path_del_archivo_viejo, path_del_archivo_nuevo)
+            actualUser.renameFile(comando_seccionado[1], comando_seccionado[2])
+        elif(comando_seccionado[0] == "renamedir"):
+            # LISTO
+            nombre_del_directorio_viejo = comando_seccionado[1]
+            nombre_del_directorio_nuevo = comando_seccionado[2]
+            path_del_directorio_viejo = pathDirectorioActual + \
+                "/" + nombre_del_directorio_viejo
+            path_del_directorio_nuevo = pathDirectorioActual + \
+                "/" + nombre_del_directorio_nuevo
+            os.rename(path_del_directorio_viejo, path_del_directorio_nuevo)
             actualUser.renombrarDirectorio(
-                nombre_del_directorio_viejo_a_registrar, nombre_del_directorio_nuevo_a_registrar)
-            '''for i in range(3):
-                print("Nuevo Nombre directorio: "+ \
-                      actualUser._Directorio[0]._NombreDir)
-                print("Fecha de ult modificación: "+ actualUser._Inodo[i]._Fecha_ult_modificacion)'''
+                nombre_del_directorio_viejo, nombre_del_directorio_nuevo)
         elif(comando_seccionado[0] == "copy"):
-            nombre_del_archivo_original = pathDirectorioActual + \
+            path_del_archivo_original = pathDirectorioActual + \
                 "/" + comando_seccionado[1] + ".txt"
-            nombre_del_archivo = pathDirectorioActual+"/" + \
-                comando_seccionado[1] + "(copy("+str(copias)+")).txt"
+            nombre_copia = pathDirectorioActual+"/" + \
+                comando_seccionado[1] + " copy("+str(copias)+").txt"
             while True:
-                if os.path.exists(nombre_del_archivo):
+                if os.path.exists(nombre_copia):
                     copias += 1
-                    nombre_del_archivo = pathDirectorioActual+"/" + \
-                        comando_seccionado[1] + "(copy("+str(copias)+")).txt"
+                    nombre_copia = pathDirectorioActual+"/" + \
+                        comando_seccionado[1] + " copy("+str(copias)+").txt"
                 else:
                     break
-            file_handler_original = open(nombre_del_archivo_original, 'r')
-            file_handler = open(nombre_del_archivo, 'w')
+            file_handler_original = open(path_del_archivo_original, 'r')
+            file_handler = open(nombre_copia, 'w')
             file_handler.write(file_handler_original.read())
             file_handler.close()
             file_handler_original.close()
+            nombre_copia = comando_seccionado[1] + " copy("+str(copias) + ")"
+            actualUser.crearArchivo(nombre_copia)
     else:
         print("Comando is None")
     return render_template("terminal.html", usr=actualUser._Nombre)
 
 
-@app.route('/dataManager', methods=['GET', 'POST'])
+@ app.route('/dataManager', methods=['GET', 'POST'])
 def dataManager():
     global pathDirectorioActual
     if request.is_json:
         data = request.get_json()
         if(data.get("comando") == "read"):
-            nombre_del_archivo = pathDirectorioActual+"/" + \
-                data.get("nombre") + ".txt"
+            nombre_del_archivo = pathDirectorioActual + \
+                "/" + data.get("nombre") + ".txt"
             file_handler = open(nombre_del_archivo, 'r')
             file_content1 = dict()
             count = 0
