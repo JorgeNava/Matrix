@@ -77,6 +77,7 @@ def terminal():
             else:
                 pathDirectorioActual += "/"+comando_seccionado[1]
             actualUser.actualizar_dir_actual_cada_CD(nombre_del_directorio)
+            print("path actual [2]: ", pathDirectorioActual)
         elif(comando_seccionado[0] == "createdir"):
             # LISTO
             nombre_del_directorio = comando_seccionado[1]
