@@ -93,10 +93,15 @@ def terminal():
             actualUser.editFile(comando_seccionado[1])
         elif(comando_seccionado[0] == "delete"):
             # LISTO
-            nombre_del_archivo = comando_seccionado[1] + ".txt"
+            if len(comando_seccionado) == 2:
+                nombre_del_archivo = comando_seccionado[1] + ".txt"
+            else:
+                nombre_del_archivo = comando_seccionado[1] + \
+                    " " + comando_seccionado[2] + ".txt"
             path_del_archivo = pathDirectorioActual + \
                 "/" + nombre_del_archivo
             os.remove(path_del_archivo)
+            print("path to delete[0]: ", path_del_archivo)
             actualUser.borrarArchivo(comando_seccionado[1])
         elif(comando_seccionado[0] == "deletedir"):
             # GUSTAVO - TRABAJANDO
@@ -127,22 +132,22 @@ def terminal():
         elif(comando_seccionado[0] == "copy"):
             path_del_archivo_original = pathDirectorioActual + \
                 "/" + comando_seccionado[1] + ".txt"
-            nombre_copia = pathDirectorioActual+"/" + \
+            path_copia = pathDirectorioActual+"/" + \
                 comando_seccionado[1] + " copy("+str(copias)+").txt"
             while True:
-                if os.path.exists(nombre_copia):
+                if os.path.exists(path_copia):
                     copias += 1
-                    nombre_copia = pathDirectorioActual+"/" + \
+                    path_copia = pathDirectorioActual+"/" + \
                         comando_seccionado[1] + " copy("+str(copias)+").txt"
                 else:
                     break
             file_handler_original = open(path_del_archivo_original, 'r')
-            file_handler = open(nombre_copia, 'w')
+            file_handler = open(path_copia, 'w')
             file_handler.write(file_handler_original.read())
             file_handler.close()
             file_handler_original.close()
-            nombre_copia = comando_seccionado[1] + " copy("+str(copias) + ")"
-            actualUser.crearArchivo(nombre_copia)
+            path_copia = comando_seccionado[1] + " copy("+str(copias) + ")"
+            actualUser.crearArchivo(path_copia)
     else:
         print("Comando is None")
     return render_template("terminal.html", usr=actualUser._Nombre)

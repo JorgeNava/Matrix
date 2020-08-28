@@ -1,15 +1,9 @@
 import os
-separarPath = ".files/Jorge/dirA/dirB".split("/")
-words = 0
-pathDirectorioActual = ""
-for word in separarPath:
-    if words < len(separarPath)-1:
-        words += 1
-        pathDirectorioActual += word + "/"
-    else:
-        pathDirectorioActual = pathDirectorioActual.rstrip("/")
-        break
-print(pathDirectorioActual)
+# LISTO
+nombre_del_archivo = "c copy(1)" + ".txt"
+path_del_archivo = "./files/Jorge/dirA/dirZ" + \
+    "/" + nombre_del_archivo
+os.remove(path_del_archivo)
 
 """
 FALTA

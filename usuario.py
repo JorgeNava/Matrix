@@ -297,12 +297,7 @@ class Usuario:
 """
 usr = Usuario("Jorge", "cisco")
 usr.crearDirectorio("dirA")
-usr.actualizar_dir_actual_cada_CD("dirA")
-usr.crearArchivo("fileB")
-print("Inodo[1]: ", usr._Inodo[1])
-print("Inodo[2]: ", usr._Inodo[2])
+print("Inodo[1]: ", usr._PathDirectorios)
 
-usr.renameFile("fileB", "fileZ")
-print("Inodo[1]: ", usr._Inodo[1])
-print("Inodo[2]: ", usr._Inodo[2])
+usr.actualizar_dir_actual_cada_CD("dirA")
 """

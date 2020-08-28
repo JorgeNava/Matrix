@@ -56,7 +56,7 @@ function inputCommandTerminal() {
                 renameDir(comandoSeccionado[1], comandoSeccionado[2])
                 break
             case "delete":
-                deleteFile(comandoSeccionado[1])
+                deleteFile(comandoSeccionado[1], comandoSeccionado[2])
                 break
             case "deletedir":
                 deleteDir(comandoSeccionado[1])
@@ -138,9 +138,15 @@ function edit(nombre_del_archivo, texto_a_agregar) {
 }
 
 //Eliminara un archivo
-function deleteFile(nombre_del_archivo) {
-    matrixTerminal.print("deleting file:" + nombre_del_archivo)
-    parametros_a_enviar = "comando_a_enviar=delete-" + nombre_del_archivo;
+function deleteFile(nombre_del_archivo, nombre_copia) {
+    if (typeof nombre_copia !== 'undefined') {
+        matrixTerminal.print("deleting file:" + nombre_del_archivo + " " + nombre_copia)
+        parametros_a_enviar = "comando_a_enviar=delete-" + nombre_del_archivo + "-" + nombre_copia;
+    } else {
+        matrixTerminal.print("deleting file:" + nombre_del_archivo)
+        parametros_a_enviar = "comando_a_enviar=delete-" + nombre_del_archivo;
+
+    }
     send_request_to_python(parametros_a_enviar);
 }
 //Eliminara un directorio
