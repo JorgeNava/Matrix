@@ -61,8 +61,6 @@ def terminal():
         elif comando_seccionado[0] == "cd":
             # LISTO
             nombre_del_directorio = comando_seccionado[1]
-            path_del_directorio = pathDirectorioActual + \
-                "/" + nombre_del_directorio
             if nombre_del_directorio == ".." or nombre_del_directorio == "../":
                 separarPath = pathDirectorioActual.split("/")
                 words = 0
@@ -72,12 +70,11 @@ def terminal():
                         words += 1
                         pathDirectorioActual += word + "/"
                     else:
-                        pathDirectorioActual.rstrip("/")
+                        pathDirectorioActual = pathDirectorioActual.rstrip("/")
                         break
             else:
-                pathDirectorioActual += "/"+comando_seccionado[1]
+                pathDirectorioActual += "/"+nombre_del_directorio
             actualUser.actualizar_dir_actual_cada_CD(nombre_del_directorio)
-            print("path actual [2]: ", pathDirectorioActual)
         elif(comando_seccionado[0] == "createdir"):
             # LISTO
             nombre_del_directorio = comando_seccionado[1]
