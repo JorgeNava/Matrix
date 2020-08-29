@@ -21,6 +21,7 @@ class Usuario:
         self.myInit()
 
     def myInit(self):
+        self._PathDirectorios.append({0: self._Nombre})
         for i in range(lists_Size):
             self._LIL.append(i)
             self._LBL.append(i)
@@ -201,6 +202,19 @@ class Usuario:
                 break
             else:
                 numDir += 1
+        # buscamos indice en directorio
+        indice_del_directorio_actual = self.buscarIndiceDeDirectorioPorInodo(
+            self._InodoDelDirectorioActual)
+        # Asignamos los nuevos valores al directorio correspondiente (PAPA)
+        numArchivo = 0
+        for inodoFile in self._Directorio[indice_del_directorio_actual]._Inodos:
+            if inodoFile == -1:
+                self._Directorio[indice_del_directorio_actual]._Inodos[numArchivo] = inodo_del_nuevo_directorio
+                self._Directorio[indice_del_directorio_actual]._Nombre[numArchivo] = nombre_del_directorio
+                break
+            else:
+                numArchivo += 1
+        self._Directorio[indice_del_directorio_actual]._Libre = False
 
     def actualizarNombresDeArchivosEnDirectorios(self):
         """ Algoritmo: LISTO 

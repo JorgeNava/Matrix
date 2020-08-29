@@ -1,11 +1,11 @@
-from flask import Flask, render_template, session, request, jsonify
+from flask import Flask, render_template, session, request, jsonify,redirect
 import os
 from usuario import Usuario
 import json
 import shutil
 from os import listdir
 from os.path import isfile, isdir
-
+import pickle
 
 app = Flask(__name__)
 app.secret_key = "secreto"
@@ -27,6 +27,7 @@ def inicio():
 @ app.route("/login", methods=["POST", "GET"])
 def login():
     global pathDirectorioActual
+    global actualUser
     session["usuario"] = ""
     if request.method == "POST":
         for u in users:
@@ -41,11 +42,18 @@ def login():
                 actualUser._InodoDelDirectorioActual = u._InodoDelDirectorioActual
                 actualUser._PathDirectorios.append({0: actualUser._Nombre})
         pathDirectorioActual = "./files/"+actualUser._Nombre
+
+        memoryFile = "./files/memorias/"+session["usuario"]+".txt"
+        memoryData = open(memoryFile,'rb')
+        actualUser = pickle.load(memoryData)
+        memoryData.close()
+
     return render_template("login.html")
 
 
 @ app.route("/terminal", methods=["POST", "GET"])
 def terminal():
+    global actualUser
     copias = 1
     global pathDirectorioActual
     comando_recibido = request.args.get("comando_a_enviar")
@@ -152,12 +160,17 @@ def terminal():
             actualUser.crearArchivo(path_copia)
     else:
         print("Comando is None")
+    memoryFile = "./files/memorias/"+session["usuario"]+".txt"
+    memoryData = open(memoryFile,'wb')
+    actualUser2 = pickle.dump(actualUser,memoryData)
+    memoryData.close()
     return render_template("terminal.html", usr=actualUser._Nombre)
 
 
 @ app.route('/dataManager', methods=['GET', 'POST'])
 def dataManager():
     global pathDirectorioActual
+    global actualUser
     if request.is_json:
         data = request.get_json()
         if(data.get("comando") == "read"):
@@ -200,6 +213,16 @@ def dataManager():
             current_path = {0: pathDirectorioActual}
             return current_path
 
+@ app.route("/logout")
+def logout():
+
+    memoryFile = "./files/memorias/"+session["usuario"]+".txt"
+    memoryData = open(memoryFile,'wb')
+    pickle.dump(actualUser,memoryData)
+    memoryData.close()
+
+    session.pop('usuario', None)
+    return redirect('/login')
 
 def ls1(path):
     # return [obj for obj in listdir(path) if isfile(path + obj)]
@@ -208,6 +231,5 @@ def ls1(path):
         for archivo in archivos:
             contenido_de_dir.append(archivo.name)
     return contenido_de_dir
-
 
 app.run(debug=True, port=80)
